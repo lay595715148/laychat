@@ -4,6 +4,7 @@ body,p,a,div,span,ul,li {
 	padding:0;
 	border:0;
 }
+textarea { margin:0; }
 /**
  * display
  */
