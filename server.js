@@ -42,6 +42,8 @@ io.sockets.on('connection', function(socket) {
         hello : 'world'
     });
     socket.on('my other event', function(data) {
+        console.log(io.__proto__);
         console.log(data);
     });
 });
+fs.writeFile(__dirname + '/logs/debug.log', io.__proto__);

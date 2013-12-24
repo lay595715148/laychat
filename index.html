@@ -3,18 +3,42 @@
 <head>
   <title>Lay Chat</title>
   <script src="/jquery/jquery-1.10.2.js"></script>
-  <script src="/jquery/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
-  <link type="text/css" rel="stylesheet" href="/jquery/jquery-ui-1.10.3/themes/base/jquery-ui.css"/>
+  <script src="/jquery/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js"></script>
+  <link href="/css/main.css" type="text/css" rel="stylesheet"/>
+  <link href="/jquery/jquery-ui-1.10.3.custom/css/flick/jquery-ui-1.10.3.custom.css" type="text/css" rel="stylesheet"/>
   <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-<script>
-  var socket = io.connect('http://localhost:8132/');
-  socket.on('news', function (data) {
-    console.log(data);
-    
-    socket.emit('my other event', { my: 'data' });
-  });
-</script>
+<div class="main">
+  <div class="l container">
+    <div class="t">
+      <h1>我</h1>
+    </div>
+    <div class="c">
+      <p >welcome</p>
+    </div>
+  </div>
+  <div class="r container">
+    <div class="t">
+      <h1>他们</h1>
+    </div>
+    <div class="c">
+      <ul><li>system</li></ul>
+    </div>
+  </div>
+  <div class="clr"></div>
+  <div class="e">
+    <div class="l">
+      <textarea rows="3" cols="100"></textarea>
+    </div>
+    <div class="r">
+      <button id="sendbtn">
+        <span class="ui-button-text">A button element</span>
+      </button>
+    </div>
+    <div class="clr"></div>
+  </div>
+</div>
+<script src="/js/init.js"></script>
 </body>
 </html>

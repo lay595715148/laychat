@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+body,p,a,div,span,ul,li {
+	margin:0;
+	padding:0;
+	border:0;
+}
+.clr {
+	clear: both;
+}
+.main {
+	width: 100%;
+	margin:0 0 16px 0;
+}
+.l {
+	float: left;
+}
+.r {
+    float: right;
+}
+.l.container {
+	padding:0 1% 0 1%;
+	width:67%;
+	overflow: auto;
+	border-right:1px dotted #bdbdbd
+}
+.r.container {
+    margin:0 1% 0 0;
+	width:29%;
+    overflow: auto;
+}
+
+.l .t,.r .t {
+    border-bottom:1px dotted #bdbdbd
+}
+.l .c,.r .c {
+	margin:0;
+	padding:16px 0 16px 0;
+    height:500px;
+    border-bottom:1px dotted #bdbdbd
+}
+.e {
+	padding:16px 1% 0 1%;
+}
