@@ -10,3 +10,4 @@ socket.on('news', function (data) {
 }).on('reconnecting', function() {
     console.log('reconnecting');
 });
+$( "#sendbtn" ).button({});
