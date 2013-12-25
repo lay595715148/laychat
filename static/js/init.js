@@ -11,3 +11,5 @@ socket.on('news', function (data) {
     console.log('reconnecting');
 });
 $( "#sendbtn" ).button({});
+$( "#chatlist" ).menu();
+$( "#userlist" ).menu();
