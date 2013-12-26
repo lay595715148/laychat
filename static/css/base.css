@@ -5,7 +5,6 @@ body,p,a,div,span,ul,li,h1,h2,h3,h4,h5,h6 {
     border:0;
 }
 h1 { line-height:52px;font-size:32px;}
-div { position:relative; }
 ul,li { list-style: none; }
 textarea,input { margin:0;padding:0; }
 div,p,a,ul,li,span { font-size:12px;line-height:16px;}
