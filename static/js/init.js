@@ -5,7 +5,10 @@ $(document).ready(function() {
     $( "#userlist" ).menu();
     //show_stack_bar_bottom("error");
     consume_alert();
-    
+    $(window).resize(function() {
+        $(".left_column .content").height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
+    });
+    $(".left_column .content").height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
 });
 
 var permanotice, tooltip, _alert;
@@ -451,7 +454,7 @@ function show_stack_info() {
             
         };
         
-        console.log(option);
+        if('undefined' != typeof console) console.log(option);
         
         $(this).click(function(e) {
             var saying = $("#" + option.input).val();
@@ -460,14 +463,14 @@ function show_stack_info() {
                     title: "Info",
                     text: saying,
                     type: "info",
-                    styling: 'jqueryui',
+                    styling: 'jqueryui'
                 });
             } else {
                 $.pnotify({
                     title: "Warning",
                     text: "发送内容不可为空",
-                    type: "warning",
-                    styling: 'jqueryui',
+                    type: "notice",
+                    styling: 'jqueryui'
                 });
             }
         });
