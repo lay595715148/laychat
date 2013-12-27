@@ -33,7 +33,4 @@ $(document).ready(function() {
         console.log('news > item');
         console.log(data);
     });
-    setTimeout(function() {
-        chat.emit('send', {msg:'send a message'});
-    }, 1000);
 });

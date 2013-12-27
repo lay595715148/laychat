@@ -459,12 +459,13 @@ function show_stack_info() {
         $(this).click(function(e) {
             var saying = $("#" + option.input).val();
             if(saying) {
-                $.pnotify({
+                /*$.pnotify({
                     title: "Info",
                     text: saying,
                     type: "info",
                     styling: 'jqueryui'
-                });
+                });*/
+                $.chat.emit('send', saying);
             } else {
                 $.pnotify({
                     title: "Warning",
