@@ -28,22 +28,49 @@ app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 app.get('/:t', function(req, res) {
-    io.sockets.on('connection', function(socket) {
+    /*io.sockets.on('connection', function(socket) {
         socket.emit('news', {
             content : req.params.t
         });
         console.log('OK');
-    });
+    });*/
     res.send('OK');
 });
 
-io.sockets.on('connection', function(socket) {
+var chat = io
+.of('/chat').on('connection', function (socket) {
+    socket.emit('a message', {
+        that: 'only',
+        '/chat': 'will get'
+    });
+    chat.emit('a message', {
+        everyone: 'in',
+        '/chat': 'will get'
+    });
+    socket.on('send', function(data) {
+        console.log(data);
+        chat.emit('receive', data);
+    });
+});
+var news = io
+.of('/news').on('connection', function (socket) {
+    socket.emit('item', { news: 'news' });
+}).on('publish', function(socket) {
+    
+});
+
+var announce = io
+.of('/announce').on('connection', function (socket) {
+    socket.emit('item', { news: 'announce' });
+});
+
+/*io.sockets.on('connection', function(socket) {
     socket.emit('news', {
         hello : 'world'
     });
     socket.on('my other event', function(data) {
-        console.log(io.__proto__);
+        //console.log(io.__proto__);
         console.log(data);
     });
-});
-fs.writeFile(__dirname + '/logs/debug.log', io.__proto__);
+});*/
+//fs.writeFile(__dirname + '/logs/debug.log', io.__proto__);

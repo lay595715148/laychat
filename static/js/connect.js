@@ -2,7 +2,7 @@
  * socket cnnect file
  */
 $(document).ready(function() {
-    var socket = io.connect('http://localhost:8132/');
+    /*var socket = io.connect('http://localhost:8132/');
     socket.on('news', function (data) {
         console.log(data);
         socket.emit('my other event', { my: 'data' });
@@ -13,5 +13,27 @@ $(document).ready(function() {
         console.log('disconnect');
     }).on('reconnecting', function() {
         console.log('reconnecting');
+    });*/
+    var chat = io.connect('http://localhost:8132/chat'),
+        news = io.connect('http://localhost:8132/news');
+    $.chat = chat,$.news = news;
+  
+    chat.on('connect', function () {
+        chat.emit('hi!');
+    }).on('receive', function(data) {
+        $.pnotify({
+            title: "Fake Load",
+            text: JSON.stringify(data),
+            styling: 'jqueryui',
+        });
     });
+    news.on('news', function () {
+        news.emit('woot');
+    }).on('item', function(data) {
+        console.log('news > item');
+        console.log(data);
+    });
+    setTimeout(function() {
+        chat.emit('send', {msg:'send a message'});
+    }, 1000);
 });
