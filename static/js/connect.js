@@ -21,16 +21,18 @@ $(document).ready(function() {
     chat.on('connect', function () {
         chat.emit('hi!');
     }).on('receive', function(data) {
+        if('undefined' != typeof console) 
+            console.log(data);
         $.pnotify({
             title: "Fake Load",
-            text: JSON.stringify(data),
-            styling: 'jqueryui',
+            text: data,
+            styling: 'jqueryui'
         });
     });
     news.on('news', function () {
         news.emit('woot');
     }).on('item', function(data) {
-        console.log('news > item');
-        console.log(data);
+        alert('news > item');
+        alert(data);
     });
 });
