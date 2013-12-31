@@ -2,37 +2,59 @@
  * socket cnnect file
  */
 $(document).ready(function() {
-    /*var socket = io.connect('http://localhost:8132/');
-    socket.on('news', function (data) {
-        console.log(data);
-        socket.emit('my other event', { my: 'data' });
-    }).on('connect_failed', function(err) {
-        console.log('err');
-        console.log(err);
-    }).on('disconnect', function() {
-        console.log('disconnect');
-    }).on('reconnecting', function() {
-        console.log('reconnecting');
-    });*/
-    var chat = io.connect('http://localhost:8132/chat'),
-        news = io.connect('http://localhost:8132/news');
-    $.chat = chat,$.news = news;
+    var checkReceiveData = function(data) {
+        if('undefined' == typeof data.from) {
+            return false;
+        } else {
+            
+        }
+        if('undefined' == typeof data.to) {
+            return false;
+        }
+        if('undefined' == typeof data.content) {
+            return false;
+        }
+        return true;
+    };
+    var chat = io.connect('http://localhost:8132/chat');
+    
+    chat.sendMessage = function(saying) {
+        chat.emit('send', {from:'',to:'',content:saying});
+        $.pnotify({
+            title: "Send",
+            text: saying,
+            styling: 'jqueryui'
+        });
+    };
+    chat.receiveMessage = function(saying) {
+        $.pnotify({
+            title: "Receive",
+            text: saying,
+            styling: 'jqueryui'
+        });
+    };
   
-    chat.on('connect', function () {
-        chat.emit('hi!');
+    chat.on('connect', function (data) {
+        alert('connect');
+        chat.emit('hi','man');
     }).on('receive', function(data) {
         if('undefined' != typeof console) 
             console.log(data);
-        $.pnotify({
-            title: "Fake Load",
-            text: data,
-            styling: 'jqueryui'
-        });
+        if(checkReceiveData(data)) {
+            chat.receiveMessage(data.content);
+        }
+    }).on('error', function(error) {
+        
+    }).on('connect_failed', function() {
+        console.log('connect_failed');
+        console.log(arguments);
+    }).on('disconnect', function() {
+        console.log('disconnect');
+        console.log(arguments);
+    }).on('reconnecting', function() {
+        console.log('reconnecting');
+        console.log(arguments);
     });
-    news.on('news', function () {
-        news.emit('woot');
-    }).on('item', function(data) {
-        alert('news > item');
-        alert(data);
-    });
+    
+    $.chat = chat;
 });

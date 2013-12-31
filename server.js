@@ -36,41 +36,89 @@ app.get('/:t', function(req, res) {
     });*/
     res.send('OK');
 });
+app.post('/authorize', function(req, res) {
+    /*io.sockets.on('connection', function(socket) {
+        socket.emit('news', {
+            content : req.params.t
+        });
+        console.log('OK');
+    });*/
+    res.send('OK');
+});
+
+var global_sockets = {};
+var chat_clients = {"sockectid":{},"userid":{}};
 
 var chat = io
 .of('/chat').on('connection', function (socket) {
-    socket.emit('a message', {
+    /*socket.emit('a message', {
         that: 'only',
         '/chat': 'will get'
     });
     chat.emit('a message', {
         everyone: 'in',
         '/chat': 'will get'
-    });
-    socket.on('send', function(data) {
-        console.log(data);
-        chat.emit('receive', data);
-    });
-});
-var news = io
-.of('/news').on('connection', function (socket) {
-    socket.emit('item', { news: 'news' });
-}).on('publish', function(socket) {
+    });*/
+    var checkSendData = function(data) {
+        if('undefined' == typeof data.from) {
+            return false;
+        } else {
+            
+        }
+        if('undefined' == typeof data.to) {
+            return false;
+        }
+        if('undefined' == typeof data.content) {
+            return false;
+        }
+        return true;
+    };
+    var convertTo2Tos = function(to) {
+        var tos = [];
+        if('string' == typeof to && to != '') {
+            var toArr = to.split(';');
+            tos = toArr;
+        }
+        return tos;
+    };
+    var recordData = function(data) {
+        
+    };
     
-});
-
-var announce = io
-.of('/announce').on('connection', function (socket) {
-    socket.emit('item', { news: 'announce' });
-});
-
-/*io.sockets.on('connection', function(socket) {
-    socket.emit('news', {
-        hello : 'world'
+    socket.on('send', function(data) {
+        console.log(chat_clients);
+        console.log('SOCKET ID:' + socket.id);
+        if(checkSendData(data)) {
+            var tos = convertTo2Tos(data.to);
+            if(tos.length > 0) {
+                for(var i in tos) {
+                    if(socket.sockets(tos[i]))
+                        socket.sockets(tos[i]).emit('receive', data);
+                }
+            } else {;
+                chat.emit('receive', data);
+            }
+            console.log(chat.clients('room'));
+            recordData(data);
+        } else {
+            socket.emit('error', 'yours!');
+        }
+    }).on('login', function(data) {
+        chat_clients.userid[data.userid] = socket.id;
+    }).on('hi', function(data) {
+        console.log('logs:' + data);
+    }).on('disconnect', function() {
+        if('undefined' != typeof chat_clients.sockectid[socket.id]) 
+            delete chat_clients.sockectid[socket.id];
+        console.log('do disconnect');
+    }).on('reconnecting', function(userid) {
+        chat_clients.sockectid[socket.id] = socket.id;
+        //chat_clients.userid[userid] = socket.id;
+        console.log('do reconnecting');
     });
-    socket.on('my other event', function(data) {
-        //console.log(io.__proto__);
-        console.log(data);
-    });
-});*/
-//fs.writeFile(__dirname + '/logs/debug.log', io.__proto__);
+
+    chat_clients.sockectid[socket.id] = socket.id;
+    chat_clients.userid[socket.id] = socket.id;
+    
+    //socket.sockets(socket.id).emit('scokets', io.of('/chat').clients());
+});
