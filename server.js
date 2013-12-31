@@ -84,6 +84,15 @@ var chat = io
     var recordData = function(data) {
         
     };
+    var updatePerson = function() {
+        var persons = [];
+        var clients = chat.clients();
+        for(var i = 0; i < clients.length; i++) {
+            if(!clients[i].disconnected) 
+                persons.push(clients[i].id);
+        }
+        chat.emit('update', persons);
+    };
     
     socket.on('send', function(data) {
         console.log(chat_clients);
@@ -110,15 +119,20 @@ var chat = io
     }).on('disconnect', function() {
         if('undefined' != typeof chat_clients.sockectid[socket.id]) 
             delete chat_clients.sockectid[socket.id];
+        updatePerson();
         console.log('do disconnect');
     }).on('reconnecting', function(userid) {
         chat_clients.sockectid[socket.id] = socket.id;
         //chat_clients.userid[userid] = socket.id;
+        console.log(arguments);
         console.log('do reconnecting');
+        updatePerson();
     });
 
     chat_clients.sockectid[socket.id] = socket.id;
     chat_clients.userid[socket.id] = socket.id;
     
+    updatePerson();
+    console.log('do connect');
     //socket.sockets(socket.id).emit('scokets', io.of('/chat').clients());
 });
