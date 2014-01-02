@@ -37,14 +37,16 @@ $(document).ready(function() {
     chat.on('connect', function (data) {
         alert('connect');
         chat.emit('hi','man');
-        chat.emit('get persons');
     }).on('receive', function(data) {
         if('undefined' != typeof console) 
             console.log(data);
         if(checkReceiveData(data)) {
             chat.receiveMessage(data.content);
         }
-    }).on('update', function(data) {
+    }).on('list person', function(data) {
+        console.log('list');
+        console.log(data);
+    }).on('update person', function(data) {
         console.log('update');
         console.log(data);
     }).on('error', function(error) {

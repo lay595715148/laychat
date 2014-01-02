@@ -4,6 +4,8 @@ var fs = require('fs');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+var Laychat = require('./src/cn/laysoft/laychat');
+var User = require('./src/cn/laysoft/laychat/model/User');
 
 server.listen(8132);
 
@@ -25,7 +27,7 @@ app.configure(function() {
     
 });
 app.get('/', function(req, res) {
-    res.sendfile(__dirname + '/index.html');
+    res.sendfile(__dirname + '/static/html/index.html');
 });
 app.get('/:t', function(req, res) {
     /*io.sockets.on('connection', function(socket) {
@@ -51,14 +53,6 @@ var chat_clients = {"sockectid":{},"userid":{}};
 
 var chat = io
 .of('/chat').on('connection', function (socket) {
-    /*socket.emit('a message', {
-        that: 'only',
-        '/chat': 'will get'
-    });
-    chat.emit('a message', {
-        everyone: 'in',
-        '/chat': 'will get'
-    });*/
     var checkSendData = function(data) {
         if('undefined' == typeof data.from) {
             return false;
@@ -84,15 +78,20 @@ var chat = io
     var recordData = function(data) {
         
     };
-    var updatePerson = function() {
+    var listPerson = function() {
         var persons = [];
         var clients = chat.clients();
         for(var i = 0; i < clients.length; i++) {
             if(!clients[i].disconnected) 
                 persons.push(clients[i].id);
         }
-        chat.emit('update', persons);
+        
+        socket.emit('list person', persons);
     };
+    var updatePerson = function(status) {
+        chat.emit('update person', {'sockectid':socket.id, 'status':status});
+    };
+    var u = new User();
     
     socket.on('send', function(data) {
         console.log(chat_clients);
@@ -112,27 +111,28 @@ var chat = io
         } else {
             socket.emit('error', 'yours!');
         }
+        Laychat.send({}, 'aaaaaaaaaa');
     }).on('login', function(data) {
         chat_clients.userid[data.userid] = socket.id;
-    }).on('hi', function(data) {
-        console.log('logs:' + data);
     }).on('disconnect', function() {
         if('undefined' != typeof chat_clients.sockectid[socket.id]) 
             delete chat_clients.sockectid[socket.id];
-        updatePerson();
+        updatePerson('disconnect');
         console.log('do disconnect');
     }).on('reconnecting', function(userid) {
         chat_clients.sockectid[socket.id] = socket.id;
         //chat_clients.userid[userid] = socket.id;
         console.log(arguments);
         console.log('do reconnecting');
-        updatePerson();
+        updatePerson('reconnecting');
     });
 
+    u.setSocket(socket);
     chat_clients.sockectid[socket.id] = socket.id;
     chat_clients.userid[socket.id] = socket.id;
-    
-    updatePerson();
+
+    listPerson();
+    updatePerson('connect');
     console.log('do connect');
     //socket.sockets(socket.id).emit('scokets', io.of('/chat').clients());
 });
