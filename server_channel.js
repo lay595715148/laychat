@@ -6,6 +6,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var Laychat = require('./src/cn/laysoft/laychat');
 var User = require('./src/cn/laysoft/laychat/model/User');
+var UserSummary = require('./src/cn/laysoft/laychat/model/UserSummary');
 var Channel = require('./src/cn/laysoft/laychat/model/Channel');
 
 server.listen(8133);
@@ -36,7 +37,8 @@ app.get('/:t', function(req, res) {
 });
 
 var allChannels = {};
-var checkEnterData = function(data) {
+var allUserSummarys = {};
+function checkEnterData(data) {
     if('undefined' == typeof data.token) {
         return false;
     }
@@ -45,7 +47,7 @@ var checkEnterData = function(data) {
     }
     return true;
 };
-var checkIntoData = function(data) {
+function checkIntoData(data) {
     if('undefined' == typeof data.token) {
         return false;
     }
@@ -54,7 +56,7 @@ var checkIntoData = function(data) {
     }
     return true;
 };
-var checkSendData = function(data) {
+function checkSendData(data) {
     if('undefined' == typeof data.from) {
         return false;
     }
@@ -65,23 +67,77 @@ var checkSendData = function(data) {
 };
 /**
  * @param c {Channel}
- * @param u {User}
+ * @param u {UserSummary}
  */
-var createChannel = function(u, c) {
-    var channel = null;
-    if(allChannels[c.id]) console.log(55555);
-    if(c.id && 'undefined' === typeof allChannels[c.id]) {
-        channel = allChannels[c.id] = io.of('/channel_' + c.id).on('connection', function(socket) {
+function createChannel(u, c) {
+    if('undefined' === typeof allChannels[c.id]) {
+        var channel = null;//当前频道对象Socket服务对象
+        var users = {};//当前频道的所有用户索引
+        
+        channel = io.of('/channel_' + c.id).on('connection', function(socket) {
+            var listUser = function() {
+                var userlist = [];
+                var clients = channel.clients();
+                for(var i = 0; i < clients.length; i++) {
+                    if(!clients[i].disconnected) 
+                        userlist.push(clients[i].id);
+                }
+                
+                socket.emit('list', userlist);
+            };
+            var updateUser = function() {
+                users[socket.id] = u;
+                channel.emit('update', {'user':u});
+            };
+            var intoLayer = function(layer) {
+                if('undefined' !== typeof layer && layer) {
+                    if('objaect'  === typeof layer)
+                        socket.join(layer.id);
+                    else 
+                        socket.join(layer);
+                } else if ('undefined' !== typeof u.layer && u.layer){
+                    if('objaect'  === typeof u.layer)
+                        socket.join(u.layer.id);
+                    else 
+                        socket.join(u.layer);
+                } else {
+                    return;
+                }
+                console.log('do list user');
+                listUser();
+            };
+            var outLayer = function(layer) {//退出频道层，进入频道大厅
+                if('undefined' !== typeof layer && layer) {
+                    if('objaect'  === typeof layer)
+                        sokect.leave(layer.id);
+                    else 
+                        sokect.leave(layer);
+                } else if ('undefined' !== typeof u.layer && u.layer){
+                    if('objaect'  === typeof u.layer)
+                        sokect.leave(u.layer.id);
+                    else 
+                        sokect.leave(u.layer);
+                } else {
+                    return;
+                }
+                console.log('do list user');
+                listUser();
+            };
+            
             socket.on('into', function(data) {
                 if(u && c) {
-                    createChannel(u, c);
-                    u.setSocket(socket);
-                    if(data.layer) sokect.join(data.layer);
+                    intoLayer(data.layer);
                 }
+                console.log('do into');
             }).on('out', function(data) {
                 if(u && c) {
-                    if(data.layer) sokect.leave(data.layer);
+                    if(data.layer) {
+                        outLayer();
+                        u.setLayer();
+                    }
                 }
+                updateUser();
+                console.log('do out');
             }).on('send', function(data) {
                 var persons = [];
                 var clients = channel.clients();
@@ -105,6 +161,8 @@ var createChannel = function(u, c) {
                     
                 }
                 console.log('do disconnect');
+                u.setStatus('disconnect');
+                updateUser();
             }).on('reconnecting', function() {
                 if(u && c) {
                     // TODO
@@ -112,24 +170,41 @@ var createChannel = function(u, c) {
                     
                 }
                 console.log('do reconnecting');
+                //updateUser('reconnecting');
             });
             console.log('do connect');
+
+            u.setSocket(socket);
+            u.setStatus('connection');//设置用户状态
+            //自动进入频道大厅，所以将用户进入默认频道层
+            intoLayer();//进入默认频道层
+            updateUser();
         });
+        
+        if('undefined' !== typeof allChannels[c.id]) allChannels[c.id] = c;
     }
 };
-var closeChannel = function(u, c) {
+/**
+ * @param c {Channel}
+ * @param u {UserSummary}
+ */
+function closeChannel(u, c) {
 };
-var channel = io.of('/channel').on('connection', function (socket) {
-    var u = null;
-    var c = null;
+
+io.of('/channel').on('connection', function (socket) {
+    var u = null;//UserSummary
+    var c = null;//Channel
     
     socket.on('enter', function(data) {
         if(checkEnterData(data)) {
-            u = User.generateByToken(data.token);
             c = Channel.generateById(data.channel, data.token);
+            u = UserSummary.generateByToken(data.token);
             if(u && c) {
+                if('undefined' !== typeof allUserSummarys[u.id]) {
+                    allUserSummarys[u.id] = u;
+                }
                 createChannel(u, c);
-                socket.emit('created', data);
+                socket.emit('entered', data);
             }
         } else {
             

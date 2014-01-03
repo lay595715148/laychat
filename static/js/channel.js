@@ -25,6 +25,12 @@ $(document).ready(function() {
         chat.on('connect', function() {
             alert('connect channel connect');
             console.log('connect channel connect');
+        }).on('list', function(data) {
+            console.log('list');
+            console.log(data);
+        }).on('update', function(data) {
+            console.log('update');
+            console.log(data);
         }).on('receive', function(data) {
             if(checkReceiveData(data)) {
                 chat.receiveMessage(data.saying);
@@ -60,8 +66,8 @@ $(document).ready(function() {
             alert('before channel connect');
             chat.emit('enter',{'channel':10001,'token':'2014'});
             console.log('before channel connect');
-        }).on('created', function(data) {
-            console.log('created',data);
+        }).on('entered', function(data) {
+            console.log('entered',data);
             setTimeout(function() {connectChannel(data.channel);}, 1000);
         }).on('disconnect', function() {
             //$.chat.disconnect('unauthorized');
