@@ -19,26 +19,26 @@ $(document).ready(function() {
     var connectChannel = function(id) {
         if($.chat) {
             $.chat = null;
-            console.log('do connectChannel', id, $.chat);
+            if(typeof console !== 'undefined') console.log('do connectChannel', id, $.chat);
         }
-        var chat = io.connect('http://localhost:8133/channel_' + id, {'reconnect':false,'force new connection':true});
+        var chat = io.connect('http://localhost:8133/channel_' + id, {'reconnect':false});
         chat.on('connect', function() {
             alert('connect channel connect');
-            console.log('connect channel connect');
+            if(typeof console !== 'undefined') console.log('connect channel connect');
         }).on('list', function(data) {
-            console.log('list');
-            console.log(data);
+            if(typeof console !== 'undefined') console.log('list');
+            if(typeof console !== 'undefined') console.log(data);
         }).on('update', function(data) {
-            console.log('update');
-            console.log(data);
+            if(typeof console !== 'undefined') console.log('update');
+            if(typeof console !== 'undefined') console.log(data);
         }).on('receive', function(data) {
             if(checkReceiveData(data)) {
-                chat.receiveMessage(data.saying);
+                chat.receiveMessage(data.content);
             }
         }).on('disconnect', function() {
-            console.log('connectChannel disconnect');
+            if(typeof console !== 'undefined') console.log('connectChannel disconnect');
         }).on('reconnecting', function() {
-            console.log('connectChannel reconnecting');
+            if(typeof console !== 'undefined') console.log('connectChannel reconnecting');
             //chat.disconnect();
         });
         
@@ -65,16 +65,16 @@ $(document).ready(function() {
         chat.on('connect', function (data) {
             alert('before channel connect');
             chat.emit('enter',{'channel':10001,'token':'2014'});
-            console.log('before channel connect');
+            if(typeof console !== 'undefined') console.log('before channel connect');
         }).on('entered', function(data) {
-            console.log('entered',data);
+            if(typeof console !== 'undefined') console.log('entered',data);
             setTimeout(function() {connectChannel(data.channel);}, 1000);
         }).on('disconnect', function() {
             //$.chat.disconnect('unauthorized');
-            console.log('beforeChannel disconnect');
+            if(typeof console !== 'undefined') console.log('beforeChannel disconnect');
         }).on('reconnecting', function() {
             //$.chat.disconnect('unauthorized');
-            console.log('beforeChannel reconnecting');
+            if(typeof console !== 'undefined') console.log('beforeChannel reconnecting');
         });
         //$.chat = chat;
     };

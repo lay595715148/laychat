@@ -26,13 +26,13 @@ UserSummary.prototype.setSocket = function(socket) {
         this.socket = socket;
 };
 UserSummary.prototype.setChannel = function(channel) {
-    if('object' === typeof socket)
+    if('object' === typeof channel)
         this.channel = channel.id;
     else 
         this.channel = channel;
 };
 UserSummary.prototype.setLayer = function(layer) {
-    if('object' === typeof socket)
+    if('object' === typeof layer)
         this.layer = layer.id;
     else 
         this.layer = layer;
@@ -56,7 +56,7 @@ UserSummary.prototype.toUser = function() {
 UserSummary.generateByToken = function(token) {
     // TODO
     var us = new UserSummary();
-    us.setId(1);
+    us.setId(Math.floor(Math.random() * 100000));
     us.setName('lay');
     us.setNick('admin');
     return us;
