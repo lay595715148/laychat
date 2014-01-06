@@ -56,6 +56,7 @@ UserSummary.prototype.toUser = function() {
 UserSummary.generateByToken = function(token) {
     // TODO
     var us = new UserSummary();
+    console.log('do UserSummary');
     us.setId(Math.floor(Math.random() * 100000));
     us.setName('lay');
     us.setNick('admin');

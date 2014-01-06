@@ -33,6 +33,7 @@ ChannelSummary.prototype.setSocket = function(socket) {
  * @returns {Channel}
  */
 ChannelSummary.generateById = function(id) {
+    console.log('do ChannelSummary');
     var cs = new ChannelSummary();
     // TODO
     cs.setId(id);

@@ -1,6 +1,7 @@
 var http = require('http');
 var express = require('express');
 var fs = require('fs');
+var util = require('util');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
@@ -118,7 +119,9 @@ function createChannel(us, cs) {
         var users = {};//当前频道的所有用户索引
         
         channel = io.of('/channel_' + cs.id).on('connection', function(socket) {
+            var user = us;
             var listUser = function() {
+                var user = users[socket.id];
                 var userlist = [];
                 var clients = channel.clients();
                 for(var i = 0; i < clients.length; i++) {
@@ -130,50 +133,53 @@ function createChannel(us, cs) {
                 socket.emit('list', userlist);
             };
             var updateUser = function() {
+                var user = users[socket.id];
                 /*if(u.status == 'disconnect') {
                     console.log('do update user');
                     channel.emit('update', {'user':u});
                 } else {*/
-                    socket.broadcast.emit('update', {'user':us});
+                    socket.broadcast.emit('update', {'user':user});
                 //}
-                if(us.status == 'disconnect') {
+                if(user.status == 'disconnect') {
                     delete users[socket.id];
                 } else {
-                    users[socket.id] = us;
+                    users[socket.id] = user;
                 }
             };
             var intoLayer = function(layer) {
+                var user = users[socket.id];
                 var layerid;
                 if('undefined' !== typeof layer && layer) {
                     if('objaect'  === typeof layer)
                         layerid = layer.id;
                     else 
                         layerid = layer;
-                } else if ('undefined' !== typeof us.layer && us.layer){
-                    if('objaect'  === typeof us.layer)
-                        layerid = us.layer.id;
+                } else if ('undefined' !== typeof user.layer && user.layer){
+                    if('objaect'  === typeof user.layer)
+                        layerid = user.layer.id;
                     else 
-                        layerid = us.layer;
+                        layerid = user.layer;
                 } else {
                     return;
                 }
 
                 socket.join(layerid);
-                us.setLayer(layerid);
+                user.setLayer(layerid);
                 console.log('do list user');
                 listUser();
             };
             var outLayer = function(layer) {//退出频道层，进入频道大厅
+                var user = users[socket.id];
                 if('undefined' !== typeof layer && layer) {
                     if('objaect'  === typeof layer)
                         sokect.leave(layer.id);
                     else 
                         sokect.leave(layer);
-                } else if ('undefined' !== typeof us.layer && us.layer){
-                    if('objaect'  === typeof us.layer)
-                        sokect.leave(us.layer.id);
+                } else if ('undefined' !== typeof user.layer && user.layer){
+                    if('objaect'  === typeof user.layer)
+                        sokect.leave(user.layer.id);
                     else 
-                        sokect.leave(us.layer);
+                        sokect.leave(user.layer);
                 } else {
                     return;
                 }
@@ -185,13 +191,15 @@ function createChannel(us, cs) {
                 intoLayer(data.layer);
                 console.log('do into');
             }).on('out', function(data) {
+                var user = users[socket.id];
                 if(data.layer) {
                     outLayer();
-                    us.setLayer();
+                    user.setLayer();
                 }
                 updateUser();
                 console.log('do out');
             }).on('send', function(data) {
+                var user = users[socket.id];
                 var persons = [];
                 var clients = channel.clients();
                 for(var i = 0; i < clients.length; i++) {
@@ -199,7 +207,7 @@ function createChannel(us, cs) {
                         persons.push(clients[i].id);
                 }
                 console.log(persons);
-                if(checkSendData(data) && us && cs) {
+                if(checkSendData(data) && user && cs) {
                     // TODO
                     socket.broadcast.emit('receive', data);
                 } else {
@@ -208,16 +216,18 @@ function createChannel(us, cs) {
                 console.log(data);
                 console.log('do send');
             }).on('disconnect', function() {
-                if(us && cs) {
+                var user = users[socket.id];
+                if(user && cs) {
                     // TODO
                 } else {
                     
                 }
                 console.log('do disconnect');
-                us.setStatus('disconnect');
+                user.setStatus('disconnect');
                 updateUser();
             }).on('reconnecting', function() {
-                if(us && cs) {
+                var user = users[socket.id];
+                if(user && cs) {
                     // TODO
                 } else {
                     
@@ -227,9 +237,10 @@ function createChannel(us, cs) {
             });
             console.log('do connect');
 
-            us.setSocket(socket);
-            us.setStatus('connection');//设置用户状态
+            user.setSocket(socket);
+            user.setStatus('connection');//设置用户状态;
             cs.setSocket(channel);
+            users[socket.id] = user;
             //自动进入频道大厅，所以将用户进入默认频道层
             intoLayer();//进入默认频道层
             updateUser();
@@ -252,10 +263,11 @@ io.of('/channel').on('connection', function (socket) {
         if(checkEnterData(data)) {
             cs = ChannelSummary.generateById(data.channel);
             us = UserSummary.generateByToken(data.token);
+            us.setChannel(cs);
             if(us && cs) {
                 signUser(us);
                 createChannel(us, cs);
-                socket.emit('entered', data);
+                socket.emit('entered', extend(data, us));
                 socket.leave('/channel');
             }
         } else {
@@ -282,3 +294,13 @@ io.of('/channel').on('connection', function (socket) {
     
     console.log('do connect');
 });
+
+function extend(target) {
+    var sources = [].slice.call(arguments, 1);
+    sources.forEach(function (source) {
+        for (var prop in source) {
+            target[prop] = source[prop];
+        }
+    });
+    return target;
+}
