@@ -1,5 +1,3 @@
-var Channel = require('./Channel');
-
 /**
  * 频道对象综述对象
  */
@@ -10,6 +8,7 @@ function ChannelSummary() {
     this.socket = null;
     console.log('ChannelSummary construct');
 }
+module.exports = exports = ChannelSummary;
 
 ChannelSummary.prototype.setId = function(id) {
     this.id = id;
@@ -26,6 +25,14 @@ ChannelSummary.prototype.setLayer = function(layer) {
 ChannelSummary.prototype.setSocket = function(socket) {
     this.socket = socket;
 };
+ChannelSummary.prototype.toChannel = function() {
+    var Channel = require('./Channel');
+    var c = new Channel();
+    c.setId(this.id);
+    c.setName(this.name);
+    c.setLayer(this.layer);
+    return c;
+};
 /**
  * 通过频道ID生成频道对象
  * @param id
@@ -41,12 +48,4 @@ ChannelSummary.generateById = function(id) {
     cs.setLayer(Math.floor(Math.random() * 1000));
     return cs;
 };
-ChannelSummary.prototype.toChannel = function() {
-    var c = new Channel();
-    c.setId(this.id);
-    c.setName(this.name);
-    c.setLayer(this.layer);
-    return c;
-};
 
-module.exports = ChannelSummary;

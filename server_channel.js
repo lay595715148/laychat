@@ -5,11 +5,16 @@ var util = require('util');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+//var $ = require('jquery').create();
 var Laychat = require('./src/cn/laysoft/laychat');
 var User = require('./src/cn/laysoft/laychat/model/User');
 var UserSummary = require('./src/cn/laysoft/laychat/model/UserSummary');
 var Channel = require('./src/cn/laysoft/laychat/model/Channel');
 var ChannelSummary = require('./src/cn/laysoft/laychat/model/ChannelSummary');
+/*var jsdom = require('jsdom').jsdom,
+    myWindow = jsdom().createWindow(),
+    $ = require('jquery').create(),
+    jQuery = require('jquery').create(myWindow);*/
 
 server.listen(8133);
 
@@ -39,8 +44,14 @@ app.get('/:t', function(req, res) {
 });
 
 var allChannels = {};
-var allChannelSummarys = {};
+var allChannelSummarys = {}; 
 var allUserSummarys = {};
+function checkRequestData(data) {
+    
+}
+function checkResponseData(data) {
+    
+}
 function checkEnterData(data) {
     if('undefined' == typeof data.token) {
         return false;
@@ -71,6 +82,15 @@ function checkSendData(data) {
     }
     return true;
 };
+function checkLoginData(data) {
+    if('undefined' == typeof data.token) {
+        return false;
+    }
+    return true;
+}
+function checkLogoutData(data) {
+    return true;
+}
 /**
  * 
  * @param channel {Channel|Number}
@@ -109,9 +129,8 @@ function signUser(user) {
 }
 /**
  * @param cs {ChannelSummary}
- * @param us {UserSummary}
  */
-function createChannel(us, cs) {
+function createChannel(cs) {
     if(!channelExists(cs)) {
         console.log('do create channel '+cs.id);
         console.log(allChannelSummarys);
@@ -119,7 +138,7 @@ function createChannel(us, cs) {
         var users = {};//当前频道的所有用户索引
         
         channel = io.of('/channel_' + cs.id).on('connection', function(socket) {
-            var user = us;
+            var user;
             var listUser = function() {
                 var user = users[socket.id];
                 var userlist = [];
@@ -187,47 +206,77 @@ function createChannel(us, cs) {
                 listUser();
             };
             
-            socket.on('into', function(data) {
-                intoLayer(data.layer);
+            socket.on('login', function(data) {
+                if(checkLoginData(data)) {
+                    user = UserSummary.generateByToken(data.token);
+                    user.setChannel(cs);
+                    user.setSocket(socket);
+                    user.setStatus('logined');//设置用户状态;
+                    users[socket.id] = user;//设置当前频道的用户
+                    users[user.id] = user;//设置当前频道的用户
+                    signUser(user);
+                    socket.emit('receive', extend(data, {"from":"system", "to":user.id, "content":"success"}));
+                    
+                    //自动进入频道大厅，所以将用户进入默认频道层
+                    intoLayer();//进入默认频道层
+                    updateUser();
+                }
+                console.log('do login');
+            }).on('logout', function(data) {
+                var user = users[socket.id];
+                if(user && checkLogoutData(data)) {
+                    user.setStatus('logouted');//设置用户状态;
+                    updateUser();
+                }
+                
+            }).on('into', function(data) {
+                var user = users[socket.id];
+                if(user) {
+                    intoLayer(data.layer);
+                }
                 console.log('do into');
             }).on('out', function(data) {
                 var user = users[socket.id];
-                if(data.layer) {
-                    outLayer();
-                    user.setLayer();
+                if(user) {
+                    if(data.layer) {
+                        outLayer();
+                        user.setLayer();
+                    }
+                    updateUser();
                 }
-                updateUser();
                 console.log('do out');
             }).on('send', function(data) {
                 var user = users[socket.id];
-                var persons = [];
-                var clients = channel.clients();
-                for(var i = 0; i < clients.length; i++) {
-                    if(!clients[i].disconnected) 
-                        persons.push(clients[i].id);
-                }
-                console.log(persons);
-                if(checkSendData(data) && user && cs) {
-                    // TODO
-                    socket.broadcast.emit('receive', data);
-                } else {
-                    
+                if(user) {
+                    var persons = [];
+                    var clients = channel.clients();
+                    for(var i = 0; i < clients.length; i++) {
+                        if(!clients[i].disconnected) 
+                            persons.push(clients[i].id);
+                    }
+                    console.log(persons);
+                    if(checkSendData(data) && user && cs) {
+                        // TODO
+                        socket.broadcast.emit('receive', data);
+                    } else {
+                        
+                    }
                 }
                 console.log(data);
                 console.log('do send');
             }).on('disconnect', function() {
                 var user = users[socket.id];
-                if(user && cs) {
+                if(user) {
                     // TODO
+                    user.setStatus('disconnect');
+                    updateUser();
                 } else {
                     
                 }
                 console.log('do disconnect');
-                user.setStatus('disconnect');
-                updateUser();
             }).on('reconnecting', function() {
                 var user = users[socket.id];
-                if(user && cs) {
+                if(user) {
                     // TODO
                 } else {
                     
@@ -235,64 +284,40 @@ function createChannel(us, cs) {
                 console.log('do reconnecting');
                 //updateUser('reconnecting');
             });
-            console.log('do connect');
 
-            user.setSocket(socket);
-            user.setStatus('connection');//设置用户状态;
-            cs.setSocket(channel);
-            users[socket.id] = user;
-            //自动进入频道大厅，所以将用户进入默认频道层
-            intoLayer();//进入默认频道层
-            updateUser();
+            console.log('do connect');
         });
+        cs.setSocket(channel);
         signChannel(cs);
     }
 };
 /**
  * @param cs {ChannelSummary}
- * @param us {UserSummary}
  */
-function closeChannel(us, cs) {
+function closeChannel(cs) {
 };
 
 io.of('/channel').on('connection', function (socket) {
-    var us = null;//UserSummary
     var cs = null;//ChannelSummary
     
     socket.on('enter', function(data) {
         if(checkEnterData(data)) {
             cs = ChannelSummary.generateById(data.channel);
-            us = UserSummary.generateByToken(data.token);
-            us.setChannel(cs);
-            if(us && cs) {
-                signUser(us);
-                createChannel(us, cs);
-                socket.emit('entered', extend(data, us));
-                socket.leave('/channel');
+            if(cs) {
+                Laychat.createChannel(cs, io);
+                socket.emit('entered', extend(data, cs.toChannel()));
             }
         } else {
             
         }
-        
-        //socket.disconnect('unauthorized');
-        console.log('do enter');
+        console.log('do enter in channel');
     }).on('disconnect', function() {
-        if(us && cs) {
-            // TODO
-        } else {
-            
-        }
-        console.log('do disconnect');
+        console.log('do disconnect in channel');
     }).on('reconnecting', function() {
-        if(us && cs) {
-            // TODO
-        } else {
-            
-        }
-        console.log('do reconnecting');
+        console.log('do reconnecting in channel');
     });
     
-    console.log('do connect');
+    console.log('do connect in channel');
 });
 
 function extend(target) {
