@@ -27,10 +27,7 @@ $(document).ready(function() {
         return true;
     };
     var connectChannel = function(channelid) {
-        if($.chat) {
-            $.chat = null;
-            if(typeof console !== 'undefined') console.log('do connectChannel', channelid, $.chat);
-        }
+        if($.chat) { $.chat = null; }
         var chat = io.connect('http://localhost:8133/' + channelid);
         chat.on('connect', function() {
             alert('connect channel connect');
@@ -96,6 +93,9 @@ $(document).ready(function() {
         
         $.chat = chat;
     };
+    $.connectChannel = connectChannel;
+    connectChannel(10000);
+    /*
     var beforeChannel = function() {
         var chat = io.connect('http://localhost:8133/channel');
         chat.on('connect', function (data) {
@@ -117,5 +117,5 @@ $(document).ready(function() {
         //$.chat = chat;
     };
   
-    beforeChannel();
+    beforeChannel();*/
 });

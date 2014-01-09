@@ -28,33 +28,17 @@ app.configure(function() {
     
 });
 app.get('/', function(req, res) {
-    console.log(1101);
     res.sendfile(__dirname + '/static/html/channel.html');
+    Laychat.createChannel(10000, io);
 });
 app.get('/:t', function(req, res) {
-    res.send('OK');
+    res.sendfile(__dirname + '/static/html/channel.html');
+    var channelid = /^[0-9]{5}$/.test(req.params.t)?parseInt(req.params.t):false;
+    if(channelid) {
+        Laychat.createChannel(channelid, io);
+    } else {
+        Laychat.createChannel(10000, io);
+    }
 });
 
-io.of('/channel').on('connection', function (socket) {
-    socket.on('request', function(data) {
-        if(Laychat.checkRequest(data)) {
-            console.log(data);
-            var channelid = 1000 + Math.floor(Math.random()*10)%3;
-            var cs = Laychat.createChannel(channelid, io);
-            if(cs) {
-                socket.emit('response', {'success':true, 'action':data.action, 'content':Laychat.extend(data.content, cs.toChannel())});
-            } else {
-                socket.emit('response', {'success':false, 'action':data.action, 'content':data.content});
-            }
-        } else {
-            socket.emit('response', {'success':false, 'action':data.action, 'content':data.content});
-        }
-        console.log('do request in channel');
-    }).on('disconnect', function() {
-        console.log('do disconnect in channel');
-    }).on('reconnecting', function() {
-        console.log('do reconnecting in channel');
-    });
-    
-    console.log('do connect in channel');
-});
+var tmp = setInterval(function() {io.garbageCollection();console.log('do garbage');}, 60000);
