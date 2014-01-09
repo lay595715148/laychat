@@ -39,7 +39,8 @@ io.of('/channel').on('connection', function (socket) {
     socket.on('request', function(data) {
         if(Laychat.checkRequest(data)) {
             console.log(data);
-            var cs = Laychat.createChannel(data.content.channelid, io);
+            var channelid = 1000 + Math.floor(Math.random()*10)%3;
+            var cs = Laychat.createChannel(channelid, io);
             if(cs) {
                 socket.emit('response', {'success':true, 'action':data.action, 'content':Laychat.extend(data.content, cs.toChannel())});
             } else {

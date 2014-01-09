@@ -100,12 +100,12 @@ $(document).ready(function() {
         var chat = io.connect('http://localhost:8133/channel');
         chat.on('connect', function (data) {
             alert('before channel connect');
-            chat.emit('request', {'session':'XXXX', 'action':'enter', 'content':{'channelid':10001,'token':'2014'}});
+            chat.emit('request', {'session':'XXXX', 'action':'enter', 'content':{'token':'2014'}});
             if(typeof console !== 'undefined') console.log('before channel connect');
         }).on('response', function(data) {
             if(typeof console !== 'undefined') console.log('response', data);
             if(data.success) {
-                setTimeout(function() {connectChannel(data.content.channelid);}, 10);
+                setTimeout(function() {connectChannel(data.content.id);}, 10);
             }
         }).on('disconnect', function() {
             //$.chat.disconnect('unauthorized');
