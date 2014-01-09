@@ -36,19 +36,19 @@ app.get('/:t', function(req, res) {
 });
 
 io.of('/channel').on('connection', function (socket) {
-    socket.on('enter', function(data) {
-        if(checkEnterData(data)) {
-            console.log(Number);
-            var cs = Laychat.createChannel(data.channel, io);
+    socket.on('request', function(data) {
+        if(Laychat.checkRequest(data)) {
+            console.log(data);
+            var cs = Laychat.createChannel(data.content.channelid, io);
             if(cs) {
-                socket.emit('entered', extend(data, cs.toChannel()));
+                socket.emit('response', {'success':true, 'action':data.action, 'content':Laychat.extend(data.content, cs.toChannel())});
             } else {
-                socket.emit('entered', extend(data, {'success':false}));
+                socket.emit('response', {'success':false, 'action':data.action, 'content':data.content});
             }
         } else {
-            socket.emit('entered', extend(data, {'success':false}));
+            socket.emit('response', {'success':false, 'action':data.action, 'content':data.content});
         }
-        console.log('do enter in channel');
+        console.log('do request in channel');
     }).on('disconnect', function() {
         console.log('do disconnect in channel');
     }).on('reconnecting', function() {
@@ -57,22 +57,3 @@ io.of('/channel').on('connection', function (socket) {
     
     console.log('do connect in channel');
 });
-
-function checkEnterData(data) {
-    if('undefined' == typeof data.token) {
-        return false;
-    }
-    if('undefined' == typeof data.channel || isNaN(data.channel)) {
-        return false;
-    }
-    return true;
-};
-function extend(target) {
-    var sources = [].slice.call(arguments, 1);
-    sources.forEach(function (source) {
-        for (var prop in source) {
-            target[prop] = source[prop];
-        }
-    });
-    return target;
-}

@@ -15,7 +15,7 @@ $(document).ready(function() {
         return true;
     };
     var checkResponseData = function(data) {
-        if('undefined' == typeof data.session) {
+        if('undefined' == typeof data.success) {
             return false;
         }
         if('undefined' == typeof data.action) {
@@ -26,12 +26,12 @@ $(document).ready(function() {
         }
         return true;
     };
-    var connectChannel = function(id) {
+    var connectChannel = function(channelid) {
         if($.chat) {
             $.chat = null;
-            if(typeof console !== 'undefined') console.log('do connectChannel', id, $.chat);
+            if(typeof console !== 'undefined') console.log('do connectChannel', channelid, $.chat);
         }
-        var chat = io.connect('http://localhost:8133/channel_' + id);
+        var chat = io.connect('http://localhost:8133/' + channelid);
         chat.on('connect', function() {
             alert('connect channel connect');
             if(typeof console !== 'undefined') console.log('connect channel connect');
@@ -70,6 +70,14 @@ $(document).ready(function() {
             //chat.disconnect();
         });
         
+        chat.request = function(action, content) {
+            chat.emit('request', {'session':'XXXX', 'action':action, 'content':content});
+            $.pnotify({
+                title: "Send",
+                text: content,
+                styling: 'jqueryui'
+            });
+        };
         chat.sendMessage = function(saying) {
             chat.emit('request', {'session':'XXXXXXXXX', action:'send', 'content':{from:'',to:'',content:saying}});
             $.pnotify({
@@ -92,11 +100,13 @@ $(document).ready(function() {
         var chat = io.connect('http://localhost:8133/channel');
         chat.on('connect', function (data) {
             alert('before channel connect');
-            chat.emit('enter', {'channel':10001,'token':'2014'});
+            chat.emit('request', {'session':'XXXX', 'action':'enter', 'content':{'channelid':10001,'token':'2014'}});
             if(typeof console !== 'undefined') console.log('before channel connect');
-        }).on('entered', function(data) {
-            if(typeof console !== 'undefined') console.log('entered',data);
-            setTimeout(function() {connectChannel(data.channel);}, 1000);
+        }).on('response', function(data) {
+            if(typeof console !== 'undefined') console.log('response', data);
+            if(data.success) {
+                setTimeout(function() {connectChannel(data.content.channelid);}, 10);
+            }
         }).on('disconnect', function() {
             //$.chat.disconnect('unauthorized');
             if(typeof console !== 'undefined') console.log('beforeChannel disconnect');
