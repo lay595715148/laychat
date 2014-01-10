@@ -14,7 +14,10 @@ $(document).ready(function() {
         }
         return true;
     };
-    var checkResponseData = function(data) {
+    var checkResponse = function(data) {
+        if('object' !== typeof data) {
+            return false;
+        }
         if('undefined' == typeof data.success) {
             return false;
         }
@@ -34,18 +37,8 @@ $(document).ready(function() {
             if(typeof console !== 'undefined') console.log('connect channel connect');
             //chat.emit('login', {'token':'2014'});
             chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':'2014'}});
-        }).on('list', function(data) {
-            if(typeof console !== 'undefined') console.log('list');
-            if(typeof console !== 'undefined') console.log(data);
-        }).on('update', function(data) {
-            if(typeof console !== 'undefined') console.log('update');
-            if(typeof console !== 'undefined') console.log(data);
-        }).on('receive', function(data) {
-            if(checkReceiveData(data)) {
-                chat.receiveMessage(data.content);
-            }
         }).on('response', function(data) {
-            if(checkResponseData(data)) {
+            if(checkResponse(data)) {
                 switch(data.action) {
                     case 'login':
                         if(typeof console !== 'undefined') console.log(data.content);
@@ -54,6 +47,8 @@ $(document).ready(function() {
                         chat.receiveMessage(data.content.content);
                         break;
                     case 'list':
+                        chat.listUser(data.content);
+                        break;
                     case 'update':
                         break;
                 }
@@ -63,7 +58,7 @@ $(document).ready(function() {
             if(typeof console !== 'undefined') console.log('connectChannel disconnect');
         }).on('reconnecting', function() {
             if(typeof console !== 'undefined') console.log('connectChannel reconnecting');
-            chat.emit('login', {'token':'2014'});
+            chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':'2014'}});
             //chat.disconnect();
         });
         
@@ -90,32 +85,18 @@ $(document).ready(function() {
                 styling: 'jqueryui'
             });
         };
+        chat.listUser = function(list) {
+            var users = list.list;
+            var usershtml = '';
+            users.forEach(function(item, index, arr) {
+                usershtml += '<li><a userid="' + item.id + '" socket="' + item.socket + '">' + item.name + '</a>';
+            });
+            $( "#userlist" ).html(usershtml);
+            $( "#userlist" ).menu();
+        };
         
         $.chat = chat;
     };
     $.connectChannel = connectChannel;
-    connectChannel(10000);
-    /*
-    var beforeChannel = function() {
-        var chat = io.connect('http://localhost:8133/channel');
-        chat.on('connect', function (data) {
-            alert('before channel connect');
-            chat.emit('request', {'session':'XXXX', 'action':'enter', 'content':{'token':'2014'}});
-            if(typeof console !== 'undefined') console.log('before channel connect');
-        }).on('response', function(data) {
-            if(typeof console !== 'undefined') console.log('response', data);
-            if(data.success) {
-                setTimeout(function() {connectChannel(data.content.id);}, 10);
-            }
-        }).on('disconnect', function() {
-            //$.chat.disconnect('unauthorized');
-            if(typeof console !== 'undefined') console.log('beforeChannel disconnect');
-        }).on('reconnecting', function() {
-            //$.chat.disconnect('unauthorized');
-            if(typeof console !== 'undefined') console.log('beforeChannel reconnecting');
-        });
-        //$.chat = chat;
-    };
-  
-    beforeChannel();*/
+    $.connectChannel(10000);
 });

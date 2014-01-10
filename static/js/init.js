@@ -2,7 +2,7 @@ $(document).ready(function() {
     $( "#sendbtn" ).button();
     $( "#sendbtn" ).laychat();
     $( "#chatlist" ).menu();
-    $( "#userlist" ).menu();
+    //$( "#userlist" ).menu();
     //show_stack_bar_bottom("error");
     consume_alert();
     $(window).resize(function() {
