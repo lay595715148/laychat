@@ -98,5 +98,5 @@ $(document).ready(function() {
         $.chat = chat;
     };
     $.connectChannel = connectChannel;
-    $.connectChannel(10000);
+    //$.connectChannel(10000);
 });
