@@ -5,7 +5,6 @@ var util = require('util');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
-//var $ = require('jquery').create();
 var Laychat = require('./lib');
 
 server.listen(8133);
@@ -33,12 +32,10 @@ app.get('/', function(req, res) {
 });
 app.get('/:t', function(req, res) {
     res.sendfile(__dirname + '/static/html/channel.html');
-    var channelid = /^[0-9]{5}$/.test(req.params.t)?parseInt(req.params.t):false;
+    var channelid = /^[1-9]{1}[0-9]{4}$/.test(req.params.t)?parseInt(req.params.t):false;
     if(channelid) {
         Laychat.createChannel(channelid, io);
     } else {
         Laychat.createChannel(10000, io);
     }
 });
-
-var tmp = setInterval(function() {io.garbageCollection();console.log('do garbage');}, 60000);

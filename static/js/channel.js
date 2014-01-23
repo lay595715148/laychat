@@ -41,7 +41,7 @@ $(document).ready(function() {
             if(checkResponse(data)) {
                 switch(data.action) {
                     case 'login':
-                        if(typeof console !== 'undefined') console.log(data.content);
+                        //if(typeof console !== 'undefined') console.log(data);
                         break;
                     case 'send':
                         chat.receiveMessage(data.content.content);
@@ -98,5 +98,5 @@ $(document).ready(function() {
         $.chat = chat;
     };
     $.connectChannel = connectChannel;
-    //$.connectChannel(10000);
+    $.connectChannel(10000);
 });
