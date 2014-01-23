@@ -1,0 +1,29 @@
+{
+  "name": "laychat",
+  "version": "0.0.1",
+  "private": true,
+  "keywords": [
+    "mvc",
+    "express",
+    "laychat",
+    "chat"
+  ],
+  "author": {
+    "name": "liaiyong",
+    "email": "lay595715148@126.com"
+  },
+  "dependencies": {
+    "express": "~3.3.5",
+    "mongodb":"~1.3.19",
+    "memcache":"~0.3.0",
+    "jade":"~0.35.0",
+    "mysql":"~2.0.0",
+    "tracer":"~0.5.0",
+    "mongojs":"~0.9.3"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "main": "index",
+  "_from": "laychat@0.0.1"
+}
