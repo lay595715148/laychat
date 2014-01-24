@@ -1,0 +1,11 @@
+{
+    'servers': {
+        'mamcache': {
+            'master': {
+                'host':'localhost',
+                'username':'lay',
+                'password':'lay'
+            }
+        }
+    }
+}

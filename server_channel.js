@@ -5,9 +5,24 @@ var util = require('util');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+var CFG = require('./lib/config/Configuration');
 var Laychat = require('./lib');
 
 server.listen(8133);
+
+CFG.configure(function() {
+    CFG.configure({
+        'file': __dirname + '/config/env.json'
+    });
+    CFG.configure({
+        'file': __dirname + '/config/main.' + CFG.get('env') + '.json',
+        'dir': __dirname + '/config/' + CFG.get('env')
+    });
+    CFG.configure({
+        'dir': __dirname + '/config/common'
+    });
+    console.log(CFG.get());
+});
 
 app.configure(function() {
     app.set('views', __dirname + '/template');
@@ -19,7 +34,11 @@ app.configure(function() {
 
     app.use(express.logger({stream: fs.createWriteStream(__dirname + '/logs/express.log', {flags: 'a'})}));
     //app.use(app.router);
+    /*
     app.use(express.bodyParser());
+    */
+    app.use(express.urlencoded());
+    app.use(express.json());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(express.cookieSession({ secret:'laychat',cookie: { maxAge: 60 * 60 * 1000 }}));
