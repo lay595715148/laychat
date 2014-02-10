@@ -47,14 +47,14 @@ app.configure(function() {
 });
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/static/html/channel.html');
-    Laychat.createChannel(10000, io);
+    Laychat.createChannel(io, 10000);
 });
 app.get('/:t', function(req, res) {
     res.sendfile(__dirname + '/static/html/channel.html');
     var channelid = /^[1-9]{1}[0-9]{4}$/.test(req.params.t)?parseInt(req.params.t):false;
     if(channelid) {
-        Laychat.createChannel(channelid, io);
+        Laychat.createChannel(io, channelid);
     } else {
-        Laychat.createChannel(10000, io);
+        Laychat.createChannel(io, 10000);
     }
 });
