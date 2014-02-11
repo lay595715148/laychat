@@ -23,6 +23,7 @@ CFG.configure(function() {
     });
     console.log(CFG.get());
 });
+//var ChannelManager = Laychat.getChannelManager(io)
 
 app.configure(function() {
     app.set('views', __dirname + '/template');
@@ -45,16 +46,7 @@ app.configure(function() {
     app.use(express.static(__dirname + '/static'));
     
 });
-app.get('/', function(req, res) {
-    res.sendfile(__dirname + '/static/html/channel.html');
-    Laychat.createChannel(io, 10000);
-});
-app.get('/:t', function(req, res) {
-    res.sendfile(__dirname + '/static/html/channel.html');
-    var channelid = /^[1-9]{1}[0-9]{4}$/.test(req.params.t)?parseInt(req.params.t):false;
-    if(channelid) {
-        Laychat.createChannel(io, channelid);
-    } else {
-        Laychat.createChannel(io, 10000);
-    }
-});
+
+Laychat.openManager(app);
+Laychat.openChannelManager(app, io);//
+Laychat.openUserManager(app, io);//
