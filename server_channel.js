@@ -46,7 +46,16 @@ app.configure(function() {
     app.use(express.static(__dirname + '/static'));
     
 });
+// development only
+app.configure('development', function(){
+    app.set('db uri', 'localhost/dev');
+});
 
-Laychat.openManager(app);
+// production only
+app.configure('production', function(){
+    app.set('db uri', 'n.n.n.n/prod');
+});
+
 Laychat.openChannelManager(app, io);//
 Laychat.openUserManager(app, io);//
+Laychat.openManager(app);
