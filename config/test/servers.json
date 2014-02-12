@@ -3,13 +3,19 @@
         'mongodb':{
             'master':{
                 'host':'localhost',
+                'database':'laysoft',
+                'port':27017,
                 'username':'lay',
-                'password':'lay'
+                'password':'123456',
+                'encoding':'UTF8'
             },
             'slave':{
                 'host':'localhost',
+                'database':'laysoft',
+                'port':27017,
                 'username':'lay',
-                'password':'lay'
+                'password':'123456',
+                'encoding':'UTF8'
             }
         },
         'redis':{

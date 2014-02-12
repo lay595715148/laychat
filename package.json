@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "keywords": [
+    "laychat",
     "mvc",
     "express",
-    "laychat",
     "chat"
   ],
   "author": {
