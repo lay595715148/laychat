@@ -2,6 +2,7 @@
  * socket cnnect file
  */
 $(document).ready(function() {
+    var uid = [2014,2015,2016][Math.floor(Math.random()*100)%3];
     var checkReceiveData = function(data) {
         if('undefined' == typeof data.from) {
             return false;
@@ -36,7 +37,7 @@ $(document).ready(function() {
             alert('connect channel connect');
             if(typeof console !== 'undefined') console.log('connect channel connect');
             //chat.emit('login', {'token':'2014'});
-            chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':'2014'}});
+            chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':uid}});
         }).on('response', function(data) {
             if(checkResponse(data)) {
                 switch(data.action) {
@@ -50,6 +51,7 @@ $(document).ready(function() {
                         chat.listUser(data.content);
                         break;
                     case 'update':
+                        chat.updateUser(data.content);
                         break;
                 }
                 if(typeof console !== 'undefined') console.log(data);
@@ -58,14 +60,14 @@ $(document).ready(function() {
             if(typeof console !== 'undefined') console.log('connectChannel disconnect');
         }).on('reconnecting', function() {
             if(typeof console !== 'undefined') console.log('connectChannel reconnecting');
-            chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':'2014'}});
+            chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':uid}});
             //chat.disconnect();
         });
         
         chat.request = function(action, content) {
             chat.emit('request', {'session':'XXXX', 'action':action, 'content':content});
             $.pnotify({
-                title: "Send",
+                title: action,
                 text: content,
                 styling: 'jqueryui'
             });
@@ -88,11 +90,21 @@ $(document).ready(function() {
         chat.listUser = function(list) {
             var users = list.list;
             var usershtml = '';
-            users.forEach(function(item, index, arr) {
-                usershtml += '<li><a userid="' + item.id + '" socket="' + item.socket + '">' + item.name + '</a>';
+            users.forEach(function(user, index, arr) {
+                usershtml += '<li><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
             });
             $( "#userlist" ).html(usershtml);
             $( "#userlist" ).menu();
+        };
+        chat.updateUser = function(user) {
+            var exists = $( "#userlist a[userid=" + user.id + "]" );
+            if(exists.length > 0) {
+                
+            } else {
+                var userhtml = '<li><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
+                $( "#userlist" ).append(userhtml);
+                $( "#userlist" ).menu('refresh');
+            }
         };
         
         $.chat = chat;
