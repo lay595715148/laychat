@@ -91,19 +91,24 @@ $(document).ready(function() {
             var users = list.list;
             var usershtml = '';
             users.forEach(function(user, index, arr) {
-                usershtml += '<li><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
+                usershtml += '<li userid="' + user.id + '"><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
             });
             $( "#userlist" ).html(usershtml);
             $( "#userlist" ).menu();
         };
         chat.updateUser = function(user) {
-            var exists = $( "#userlist a[userid=" + user.id + "]" );
+            var exists = $( "#userlist li[userid=" + user.id + "]" );
             if(exists.length > 0) {
-                
+                if(user.status == 'leave' || user.status == 'disconnect') {
+                    $( "#userlist li[userid=" + user.id + "]" ).remove();
+                    $( "#userlist" ).menu('refresh');
+                }
             } else {
-                var userhtml = '<li><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
-                $( "#userlist" ).append(userhtml);
-                $( "#userlist" ).menu('refresh');
+                if(user.status == 'join') {
+                    var userhtml = '<li userid="' + user.id + '"><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
+                    $( "#userlist" ).append(userhtml);
+                    $( "#userlist" ).menu('refresh');
+                }
             }
         };
         
