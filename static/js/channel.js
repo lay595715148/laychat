@@ -91,7 +91,9 @@ $(document).ready(function() {
             var users = list.list;
             var usershtml = '';
             users.forEach(function(user, index, arr) {
-                usershtml += '<li userid="' + user.id + '"><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
+                usershtml += '<li userid="' + user.id + '">' + 
+                '<a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '('+user.nick+')</a>' + 
+                '</li>';
             });
             $( "#userlist" ).html(usershtml);
             $( "#userlist" ).menu();
@@ -105,7 +107,9 @@ $(document).ready(function() {
                 }
             } else {
                 if(user.status == 'join') {
-                    var userhtml = '<li userid="' + user.id + '"><a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '</a>';
+                    var userhtml = '<li userid="' + user.id + '">' + 
+                            '<a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '('+user.nick+')</a>' + 
+                            '</li>';
                     $( "#userlist" ).append(userhtml);
                     $( "#userlist" ).menu('refresh');
                 }
