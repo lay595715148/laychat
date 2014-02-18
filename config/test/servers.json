@@ -18,6 +18,20 @@
                 'encoding':'UTF8'
             }
         },
+        'memcache':{
+            'master':{
+                'host':'localhost',
+                'port':11211
+            },
+            'slave':{
+                'host':'localhost',
+                'port':11211
+            },
+            'slave-01':{
+                'host':'localhost',
+                'port':11211
+            }
+        },
         'redis':{
             'master':{
                 'host':'localhost',
