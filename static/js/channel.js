@@ -90,11 +90,13 @@ $(document).ready(function() {
         chat.listUser = function(list) {
             var users = list.list;
             var usershtml = '';
-            users.forEach(function(user, index, arr) {
+            var user;
+            for(var i = 0; i< users.length; i++) {
+                user = users[i];
                 usershtml += '<li userid="' + user.id + '">' + 
-                '<a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '('+user.nick+')</a>' + 
+                '<a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '(' + user.nick + ')</a>' + 
                 '</li>';
-            });
+            }
             $( "#userlist" ).html(usershtml);
             $( "#userlist" ).menu();
         };
