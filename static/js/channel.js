@@ -2,7 +2,7 @@
  * socket cnnect file
  */
 $(document).ready(function() {
-    var uid = [2014,2015,2016][Math.floor(Math.random()*100)%3];
+    var uid = [2014,2015,2016,2017,2018][Math.floor(Math.random()*100)%5];
     var checkReceiveData = function(data) {
         if('undefined' == typeof data.from) {
             return false;
