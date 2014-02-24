@@ -112,4 +112,39 @@
     left: auto;
 }
 
+/* jquery-ui selectable */
+.ui-selectable {
+    list-style: none;
+    padding: 2px;
+    margin: 0;
+    display: block;
+    outline: none;
+}
+.ui-selectable li.ui-selectee {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* support: IE10, see #8844 */
+    list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+}
+.ui-selectable li.ui-selectee a {
+    text-decoration: none;
+    display: block;
+    padding: 2px .4em;
+    line-height: 1.5;
+    min-height: 0; /* support: IE7 */
+    font-weight: normal;
+    border: 1px solid #ffffff;
+}
+.ui-selectable li.ui-selectee a.ui-state-focus {
+    border: 1px solid #0073ea;
+    font-weight: normal;
+    /* margin: -1px; */
+}
+.ui-selectable li.ui-selecting a.ui-state-focus {
+    background: #ffffff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+    color: #ff0084;
+    /* margin: -1px; */
+}
+
 .content p { margin: 6px 10px 6px 10px;}

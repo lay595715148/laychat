@@ -73,7 +73,7 @@ $(document).ready(function() {
             });
         };
         chat.sendMessage = function(saying) {
-            chat.emit('request', {'session':'XXXXXXXXX', action:'send', 'content':{from:'',to:'',content:saying}});
+            chat.emit('request', {'session':'XXXXXXXXX', action:'send', 'content':{headers:{from:'', to:''}, content:saying}});
             $.pnotify({
                 title: "Send",
                 text: saying,
@@ -98,14 +98,16 @@ $(document).ready(function() {
                 '</li>';
             }
             $( "#userlist" ).html(usershtml);
-            $( "#userlist" ).menu();
+            //$( "#userlist" ).menu();
+            $( "#userlist" ).selectable('refresh');
         };
         chat.updateUser = function(user) {
             var exists = $( "#userlist li[userid=" + user.id + "]" );
             if(exists.length > 0) {
                 if(user.status == 'leave' || user.status == 'disconnect') {
                     $( "#userlist li[userid=" + user.id + "]" ).remove();
-                    $( "#userlist" ).menu('refresh');
+                    //$( "#userlist" ).menu('refresh');
+                    $( "#userlist" ).selectable('refresh');
                 }
             } else {
                 if(user.status == 'join') {
@@ -113,7 +115,8 @@ $(document).ready(function() {
                             '<a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '('+user.nick+')</a>' + 
                             '</li>';
                     $( "#userlist" ).append(userhtml);
-                    $( "#userlist" ).menu('refresh');
+                    //$( "#userlist" ).menu('refresh');
+                    $( "#userlist" ).selectable('refresh');
                 }
             }
         };

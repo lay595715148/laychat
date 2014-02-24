@@ -9,3 +9,12 @@ require
 - https://github.com/lay595715148/layutil
 - https://github.com/lay595715148/layfig-js
 - https://github.com/lay595715148/laylog
+
+dependences
+=======
+
+- express
+- socket.io
+- mongodb
+- memcache
+- jade

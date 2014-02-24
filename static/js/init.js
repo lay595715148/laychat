@@ -1,14 +1,38 @@
 $(document).ready(function() {
-    $( "#sendbtn" ).button();
-    $( "#sendbtn" ).laychat();
-    $( "#chatlist" ).menu();
-    //$( "#userlist" ).menu();
-    //show_stack_bar_bottom("error");
+    $( '#sendbtn' ).button();
+    $( '#sendbtn' ).laychat();
+    $( '#chatlist' ).menu();
+    $( '#userlist' ).selectable({
+        create: function( event, ui ) {
+            $( '#userlist.ui-selectable' ).addClass('ui-widget-content');
+            $( '#userlist.ui-selectable' ).addClass('ui-corner-all');
+            $( '#userlist.ui-selectable .ui-selectee a' ).addClass('ui-corner-all');
+        }
+    });
+    $( '#userlist' ).on('selectableselecting', function( event, ui ) {
+        var a = $( 'a', $(ui.selecting) );
+        a.addClass('ui-corner-all ui-state-focus');
+    });
+    $( '#userlist' ).on('selectableunselecting', function( event, ui ) {
+        var a = $( 'a', $(ui.unselecting) );
+        a.removeClass('ui-corner-all ui-state-focus');
+    });
+    $( '#userlist' ).on('selectableselected', function( event, ui ) {
+        var a = $( 'a', $(ui.selected) );
+        a.addClass('ui-corner-all ui-state-focus');
+        alert(a.attr('userid') + ':' + a.attr('socket'));
+    });
+    $( '#userlist' ).on('selectableunselected', function( event, ui ) {
+        var a = $( 'a', $(ui.unselected) );
+        a.removeClass('ui-corner-all ui-state-focus');
+        alert(a.attr('userid'));
+    });
+
     consume_alert();
     $(window).resize(function() {
-        $(".left_column .content").height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
+        $('.left_column .content').height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
     });
-    $(".left_column .content").height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
+    $('.left_column .content').height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
 });
 
 var permanotice, tooltip, _alert;
