@@ -244,7 +244,7 @@ Utilities.unique = unique = function(arr, equal) {
     equal = Utilities.isBoolean(equal) ? equal : true;
     for(var i = 0; i < arr.length;) {
         var a = arr.splice(i, 1);
-        if(!Utilities.inArray(a[0], arr)) {
+        if(!Utilities.inArray(a[0], arr, equal)) {
             arr.splice(i, 0, a[0]);
             i++;
         }
@@ -262,6 +262,13 @@ Utilities.inArray = inArray = function(k, arr, equal) {
             return true;
         return check(i + 1);
     }(0));
+};
+Utilities.nsort = nsort = function(arr, asc) {
+    asc = Utilities.isBoolean(asc) ? asc : true;
+    arr.sort(function(x, y) {
+        return asc?parseFloat(x)-parseFloat(y):parseFloat(y)-parseFloat(x);
+    });
+    return arr;
 };
 /**
  * @api public
