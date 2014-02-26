@@ -8,6 +8,19 @@ h1 { line-height:52px;font-size:32px;}
 ul,li { list-style: none; }
 textarea,input { margin:0;padding:0; }
 div,p,a,ul,li,span { font-size:12px;line-height:16px;}
+header, footer, section, aside, nav, hgroup, figure, figcaption {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+select, input, button, button img, label {
+    vertical-align: middle;
+}
+a {
+    text-decoration: none;
+    color: #959595;
+}
 /**
  * display
  */
