@@ -1,0 +1,33 @@
+{
+    'servers':{
+        'mongodb':{
+            'master':{
+                'host':'localhost',
+                'username':'lay',
+                'password':'lay'
+            },
+            'slave':{
+                'host':'localhost',
+                'username':'lay',
+                'password':'lay'
+            }
+        },
+        'redis':{
+            'master':{
+                'host':'localhost',
+                'username':'lay',
+                'password':'lay'
+            },
+            'slave':{
+                'host':'localhost',
+                'username':'lay',
+                'password':'lay'
+            },
+            'slave-01':{
+                'host':'localhost',
+                'username':'lay',
+                'password':'lay'
+            }
+        }
+    }
+}
