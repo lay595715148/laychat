@@ -1,0 +1,23 @@
+{
+    actions: {
+        get:{
+            '/': 'Index',
+            '/index': 'Index',
+            '/manager': 'Manage',
+            '/login': 'Login'
+        },
+        post:{
+            '/login': 'Login'
+        },
+        request:{
+            
+        },
+        regexp: [{
+            'reg':/^\/\u\/([1-9]{1,}[0-9]{0,})$/,
+            'ref':'Login'
+        },{
+            'reg':/^\/c\/([1-9]{1,}[0-9]{0,})$/,
+            'ref':'Login'
+        }]
+    }
+}
