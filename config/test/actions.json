@@ -4,6 +4,7 @@
             '/': 'Index',
             '/index': 'Index',
             '/manager': 'Manage',
+            '/client': 'ClientAction',
             '/login': 'Login'
         },
         post:{
