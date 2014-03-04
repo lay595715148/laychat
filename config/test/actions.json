@@ -5,6 +5,8 @@
             '/index': 'Index',
             '/manager': 'Manage',
             '/client': 'ClientAction',
+            '/channel': 'ChannelAction',
+            '/user': 'UserAction',
             '/login': 'Login'
         },
         post:{
