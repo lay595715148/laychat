@@ -7,6 +7,7 @@
             '/client': 'ClientAction',
             '/channel': 'ChannelAction',
             '/user': 'UserAction',
+            '/authorize': 'Authorize',
             '/login': 'Login'
         },
         post:{
