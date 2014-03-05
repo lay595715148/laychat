@@ -6,15 +6,14 @@
             '/manager': 'Manage',
             '/client': 'ClientAction',
             '/channel': 'ChannelAction',
-            '/user': 'UserAction',
-            '/authorize': 'Authorize',
-            '/login': 'Login'
+            '/user': 'UserAction'
         },
         post:{
-            '/login': 'Login'
+            '/api': 'Api'
         },
         request:{
-            
+            '/authorize': 'Authorize',
+            '/login': 'Login'
         },
         regexp: [{
             'reg':/^\/\u\/([1-9]{1,}[0-9]{0,})$/,

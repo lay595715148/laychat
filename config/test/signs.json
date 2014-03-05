@@ -3,7 +3,10 @@
         memcache: {
             session: 'session',
             token: 'token',
-            user: 'user'
+            user: 'user',
+            oauth2: {
+                
+            }
         },
         cookie: {
             session: 'sessid'
