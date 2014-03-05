@@ -13,6 +13,7 @@
         },
         request:{
             '/authorize': 'Authorize',
+            '/token': 'Token',
             '/login': 'Login'
         },
         regexp: [{

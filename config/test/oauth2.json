@@ -1,0 +1,7 @@
+{
+    oauth2: {
+        code_lifetime: 12400,
+        access_token_lifetime: 12400,
+        use_refresh_token: false
+    }
+}
