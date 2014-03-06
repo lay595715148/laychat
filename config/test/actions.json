@@ -14,14 +14,21 @@
         request:{
             '/authorize': 'Authorize',
             '/token': 'Token',
-            '/login': 'Login'
+            '/login': 'Login',
+            '/api': 'Api',
+            
+            '/ta': 'TokenAction',
+            '/ca': 'CodeAction'
         },
         regexp: [{
             'reg':/^\/\u\/([1-9]{1,}[0-9]{0,})$/,
-            'ref':'Login'
+            'ref':'UserAction'
         },{
             'reg':/^\/c\/([1-9]{1,}[0-9]{0,})$/,
-            'ref':'Login'
+            'ref':'ChannelAction'
+        },{
+            'reg':/^\/app\/([1-9]{1,}[0-9]{0,})$/,
+            'ref':'ClientAction'
         }]
     }
 }

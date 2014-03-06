@@ -4,10 +4,14 @@ $(document).ready(function() {
         blankh = $(window).height() - $('header').height() - $('.main').height() - $('footer').height();
         if(blankh > 0) {
             $('body').css('padding-top', Math.floor(blankh / 2));
+        } else {
+            $('body').css('padding-top', 0);
         }
     });
     if(blankh > 0) {
         $('body').css('padding-top', Math.floor(blankh / 2));
+    } else {
+        $('body').css('padding-top', 0);
     }
     $('.main').css({
         'background-color' : 'rgb(249, 221, 200)',

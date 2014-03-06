@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= '请登录'
+    title= title
     link(rel='shortcut icon', href='/image/favicon.ico')
     link(type='text/css', href='/jquery/jquery-ui-1.10.3.custom/css/flick/jquery-ui.css', media='all', rel='stylesheet')
     link(type='text/css', href='/webix/webix.css', rel='stylesheet')
@@ -23,35 +23,51 @@ html
           a(href='/login', target='_blank')
             img(src='http://mimg.127.net/logo/126logo.gif')
         nav.header-nav
-          a(href='/login', target='_blank') 个人中心
-          a(href='/login', target='_blank') 其他
-          a(href='/login', target='_blank') 帮助信息
+          a(href='/login', target='_blank')= res.PERSON_CENTER
+          a(href='/login', target='_blank')= res.OTHER
+          a(href='/login', target='_blank')= res.HELP_INFO
     section(class='main')
       .main-inner
         .login-box
           .login-header
             .login-normal 普通登录
-            .login-other 其他登录
+            .login-other 第三方登录
           .login-form
             form(action='', method='post')
-              .login-line-input
-                b.ico.ico-uid
-                input.login-form-input(name='username')
-                label.login-placeholder.login-placeholder-show 用户名
-              .login-line-input
-                b.ico.ico-pwd
-                input.login-form-input(name='password', type='password')
-                label.login-placeholder.login-placeholder-show 密码
+              if user
+                .login-line-info
+                  span.login-form-span.info(name='info')= res.LOGINED_TITLE
+                .login-line-info
+                  span.login-form-span.name(name='username')= res.USERNAME + '：' + user.name
+              else 
+                .login-line-input
+                  b.ico.ico-uid
+                  input.login-form-input(name='username')
+                  label.login-placeholder.login-placeholder-show= res.USERNAME
+                .login-line-input
+                  b.ico.ico-pwd
+                  input.login-form-input(name='password', type='password')
+                  label.login-placeholder.login-placeholder-show= res.PASSWORD
               .login-line-check
+                if error
+                  span.failure= error
+                if user
+                  input#otherlogin(type='hidden' name='otherlogin' value='')
+                else
+                  input#register(type='hidden' name='register' value='')
               .login-line-btn
-                button.btn.login-button(type='submit') 登  录
-                button.btn.login-button.login-button-reg(href='', target='_blank') 注  册
+                if user
+                  button.btn.login-button(type='submit', onclick='javascript:$("#otherlogin").val("");')= res.BTN_AUTH_LOGIN
+                  button.btn.login-button.login-button-other(type='submit', onclick='javascript:$("#otherlogin").val("1");')= res.BTN_OTHER_LOGIN
+                else
+                  button.btn.login-button(type='submit', onclick='javascript:$("#register").val("");')= res.BTN_LOGIN
+                  button.btn.login-button.login-button-reg(type='submit', onclick='javascript:$("#register").val("1");')= res.BTN_REGESTER
               .login-line-cfg
     footer(class='footer')
       .footer-inner
         nav.footer-nav
-          a(href='/login', target='_blank') 关于我们
-          a.last(href='/login', target='_blank') 隐私政策
+          a(href='/login', target='_blank')= res.ABOUT_US
+          a.last(href='/login', target='_blank')= res.PRIVACY
           |
           span.copyright 公司版权所有©1997-2014
           |
