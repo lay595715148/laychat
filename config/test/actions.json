@@ -12,8 +12,8 @@
             '/api': 'Api'
         },
         request:{
-            '/authorize': 'Authorize',
-            '/token': 'Token',
+            '/oauth2/authorize': 'Authorize',
+            '/oauth2/token': 'Token',
             '/login': 'Login',
             '/api': 'Api',
             
