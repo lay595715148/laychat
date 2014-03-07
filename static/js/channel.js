@@ -3,18 +3,7 @@
  */
 $(document).ready(function() {
     var uid = [2014,2015,2016,2017,2018][Math.floor(Math.random()*100)%5];
-    var checkReceiveData = function(data) {
-        if('undefined' == typeof data.from) {
-            return false;
-        }
-        if('undefined' == typeof data.to) {
-            return false;
-        }
-        if('undefined' == typeof data.content) {
-            return false;
-        }
-        return true;
-    };
+    var sessid = $.cookie('sessid');
     var checkResponse = function(data) {
         if('object' !== typeof data) {
             return false;
@@ -37,7 +26,7 @@ $(document).ready(function() {
             alert('connect channel connect');
             if(typeof console !== 'undefined') console.log('connect channel connect');
             //chat.emit('login', {'token':'2014'});
-            chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':uid}});
+            chat.emit('request', {'sessid':sessid,'action':'login','content':{}});
         }).on('response', function(data) {
             if(checkResponse(data)) {
                 switch(data.action) {
@@ -60,12 +49,12 @@ $(document).ready(function() {
             if(typeof console !== 'undefined') console.log('connectChannel disconnect');
         }).on('reconnecting', function() {
             if(typeof console !== 'undefined') console.log('connectChannel reconnecting');
-            chat.emit('request', {'session':'XXXXXX','action':'login','content':{'token':uid}});
+            chat.emit('request', {'sessid':sessid,'action':'login','content':{}});
             //chat.disconnect();
         });
         
         chat.request = function(action, content) {
-            chat.emit('request', {'session':'XXXX', 'action':action, 'content':content});
+            chat.emit('request', {'sessid':sessid, 'action':action, 'content':content});
             $.pnotify({
                 title: action,
                 text: content,
@@ -73,12 +62,13 @@ $(document).ready(function() {
             });
         };
         chat.sendMessage = function(saying) {
-            chat.emit('request', {'session':'XXXXXXXXX', action:'send', 'content':{headers:{from:'', to:''}, content:saying}});
+            chat.emit('request', {'sessid':sessid, action:'send', 'content':{headers:{from:'', to:''}, content:saying}});
             $.pnotify({
                 title: "Send",
                 text: saying,
                 styling: 'jqueryui'
             });
+            $('#content').append('<p style="color:green">S: <br>' + saying + '</p>');
         };
         chat.receiveMessage = function(saying) {
             $.pnotify({
@@ -86,6 +76,7 @@ $(document).ready(function() {
                 text: saying,
                 styling: 'jqueryui'
             });
+            $('#content').append('<p style="color:blue">R: <br>' + saying + '</p>');
         };
         chat.listUser = function(list) {
             var users = list.list;
