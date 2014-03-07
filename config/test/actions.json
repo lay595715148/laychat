@@ -15,6 +15,7 @@
             '/oauth2/authorize': 'Authorize',
             '/oauth2/token': 'Token',
             '/login': 'Login',
+            '/logout': 'Logout',
             '/api': 'Api',
             
             '/ta': 'TokenAction',

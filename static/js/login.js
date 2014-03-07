@@ -6,12 +6,6 @@ $(document).ready(function() {
     var pinput = $('.login-form input[name="password"]');
     var rawlabelu = uinput.parent().children('label').html();
     var rawlabelp = pinput.parent().children('label').html();
-    if(uinput.val()) {
-        uinput.parent().children('label').html('');
-    }
-    if(pinput.val()) {
-        pinput.parent().children('label').html('');
-    }
     uinput.on('focus', function(el) {
         uinput.parent().children('label').html('');
     }).on('blur', function() {
@@ -26,6 +20,13 @@ $(document).ready(function() {
             pinput.parent().children('label').html(rawlabelp);
         }
     });
-    
-    
+    if(pinput.val()) {
+        pinput.parent().children('label').html('');
+    }
+    if(uinput.val()) {
+        uinput.parent().children('label').html('');
+        pinput.focus();
+    } else {
+        uinput.focus();
+    }
 });

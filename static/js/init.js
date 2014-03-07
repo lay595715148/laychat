@@ -216,7 +216,7 @@ Utilities.toXml = toXml = function(json) {
 /**
  * @api public
  */
-Utilities.toString = toString = function(json) {
+Utilities.toString = function(json) {
     var str = '';
 
     if(Utilities.isNull(json) || Utilities.isUndefined(json) || Utilities.isError(json))

@@ -11,6 +11,10 @@ html
     link(type='text/css', href='/jquery/pnotify-1.2.0/jquery.pnotify.default.css', rel='stylesheet')
     link(type='text/css', href='/jquery/pnotify-1.2.0/jquery.pnotify.default.icons.css', rel='stylesheet')
     link(type='text/css', href='/css/main.css',  rel='stylesheet')
+    //
+      [if lt IE 9]>
+      script(type='text/javascript', src='/js/html5shiv.js')
+      <![endif]
     script(type='text/javascript', src='/socket.io/socket.io.js')
     script(type='text/javascript', src='/jquery/jquery-1.10.2.js')
     script(type='text/javascript', src='/jquery/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js')
