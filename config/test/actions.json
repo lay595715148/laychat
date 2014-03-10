@@ -18,8 +18,8 @@
             '/logout': 'Logout',
             '/api': 'Api',
             
-            '/ta': 'TokenAction',
-            '/ca': 'CodeAction'
+            '/admin/token': 'TokenAction',
+            '/admin/code': 'CodeAction'
         },
         regexp: [{
             'reg':/^\/\u\/([1-9]{1,}[0-9]{0,})$/,
