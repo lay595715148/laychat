@@ -17,6 +17,7 @@
             '/login': 'Login',
             '/logout': 'Logout',
             '/api': 'Api',
+            '/redirect': 'Redirect',
             
             '/admin/token': 'TokenAction',
             '/admin/code': 'CodeAction'

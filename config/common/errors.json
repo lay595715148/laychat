@@ -6,7 +6,7 @@
             },
             oauth2: {
                 invalid: {
-                    code: 200001,
+                    grant: 200001,
                     token: 200002,
                     authorize: 200003
                 }
@@ -19,7 +19,7 @@
             },
             oauth2: {
                 invalid: {
-                    code: 'oauth2_invalid_code',
+                    grant: 'oauth2_invalid_grant',
                     token: 'oauth2_invalid_token',
                     authorize:'oauth2_authorize_error'
                 }
