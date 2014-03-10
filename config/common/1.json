@@ -1,8 +1,0 @@
-{
-    'common':{
-        'host':'localhost'
-    },
-    'as':{
-        'my':'true'
-    }
-}
