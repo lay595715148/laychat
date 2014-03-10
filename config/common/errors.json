@@ -1,0 +1,20 @@
+{
+    errors: {
+        code: {
+            oauth2: {
+                code: 200001,
+                token: 200002,
+                authorize: 200003
+            },
+            register: 300001
+        },
+        info: {
+            oauth2: {
+                code: 'oauth2_invalid_code',
+                token: 'oauth2_invalid_token',
+                authorize:'oauth2_authorize_error'
+            },
+            register:'register_error'
+        }
+    }
+}

@@ -22,13 +22,13 @@
             '/admin/code': 'CodeAction'
         },
         regexp: [{
-            'reg':/^\/\u\/([1-9]{1,}[0-9]{0,})$/,
+            'reg':/^\/\u\/(\d+)$/,
             'ref':'UserAction'
         },{
-            'reg':/^\/c\/([1-9]{1,}[0-9]{0,})$/,
+            'reg':/^\/c\/(\d+)$/,
             'ref':'ChannelAction'
         },{
-            'reg':/^\/app\/([1-9]{1,}[0-9]{0,})$/,
+            'reg':/^\/app\/(\d+)$/,
             'ref':'ClientAction'
         }]
     }
