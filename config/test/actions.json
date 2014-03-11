@@ -1,36 +1,37 @@
 {
     actions: {
         get:{
-            '/': 'Index',
-            '/index': 'Index',
+            '/': 'web.Index',
+            '/index': 'web.Index',
             '/manager': 'Manage',
-            '/client': 'ClientAction',
-            '/channel': 'ChannelAction',
-            '/user': 'UserAction'
+            '/client': 'web.ClientAction',
+            '/channel': 'web.ChannelAction',
+            '/user': 'web.UserAction'
         },
         post:{
-            '/api': 'Api'
+            '/api': 'api.Api'
         },
         request:{
-            '/oauth2/authorize': 'Authorize',
-            '/oauth2/token': 'Token',
-            '/login': 'Login',
-            '/logout': 'Logout',
-            '/api': 'Api',
-            '/redirect': 'Redirect',
+            '/oauth2/authorize': 'auth.Authorize',
+            '/oauth2/token': 'auth.Token',
+            '/login': 'auth.Login',
+            '/logout': 'auth.Logout',
+            '/redirect': 'auth.Redirect',
             
-            '/admin/token': 'TokenAction',
-            '/admin/code': 'CodeAction'
+            '/api': 'api.Api',
+            
+            '/admin/token': 'admin.TokenAction',
+            '/admin/code': 'admin.CodeAction'
         },
         regexp: [{
             'reg':/^\/\u\/(\d+)$/,
-            'ref':'UserAction'
+            'ref':'web.UserAction'
         },{
             'reg':/^\/c\/(\d+)$/,
-            'ref':'ChannelAction'
+            'ref':'web.ChannelAction'
         },{
             'reg':/^\/app\/(\d+)$/,
-            'ref':'ClientAction'
+            'ref':'web.ClientAction'
         }]
     }
 }
