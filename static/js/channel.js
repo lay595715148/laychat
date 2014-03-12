@@ -1,8 +1,76 @@
+(function($) {
+    $.fn.laychat = function(options) {
+        var defaults = {
+            id : 'sendbtn',
+            input : 'sendmsg',
+            output : 'content'
+        };
+
+        var option = $.extend(defaults, options);
+
+        $(this).click(function(e) {
+            var saying = $("#" + option.input).val();
+            if(saying) {
+                $.chat.sendMessage(saying);
+            } else {
+                $.pnotify({
+                    title : "Warning",
+                    text : "发送内容不可为空",
+                    type : "notice",
+                    styling : 'jqueryui'
+                });
+            }
+        });
+    };
+})(jQuery);
+
+$(document).ready(function() {
+    $.to = {};
+    $('#sendbtn').button();
+    $('#sendbtn').laychat();
+    $('#chatlist').menu();
+    $('#userlist').selectable({
+        create : function(event, ui) {
+            $('#userlist.ui-selectable').addClass('ui-widget-content');
+            $('#userlist.ui-selectable').addClass('ui-corner-all');
+            $('#userlist.ui-selectable .ui-selectee a').addClass('ui-corner-all');
+        }
+    });
+    $('#userlist').on('selectableselecting', function(event, ui) {
+        var a = $('a', $(ui.selecting));
+        a.addClass('ui-corner-all ui-state-focus');
+    });
+    $('#userlist').on('selectableunselecting', function(event, ui) {
+        var a = $('a', $(ui.unselecting));
+        a.removeClass('ui-corner-all ui-state-focus');
+    });
+    $('#userlist').on('selectableselected', function(event, ui) {
+        var a = $('a', $(ui.selected));
+        if(a.length > 0) {
+            a.addClass('ui-corner-all ui-state-focus');
+            $.to[a.attr('userid')] = a.attr('socket');
+            alert(a.attr('userid') + ':' + a.attr('socket'));
+        }
+    });
+    $('#userlist').on('selectableunselected', function(event, ui) {
+        var a = $('a', $(ui.unselected));
+        a.removeClass('ui-corner-all ui-state-focus');
+        delete $.to[a.attr('userid')];
+        alert(a.attr('userid'));
+    });
+
+    Pnotify.consume_alert();
+    $(window).resize(function() {
+        $('.left_column .content').height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
+    });
+    $('.left_column .content').height($(window).height() - 141 > 200 ? $(window).height() - 141 : 200);
+});
+
 /**
  * socket cnnect file
  */
 $(document).ready(function() {
-    var uid = [2014,2015,2016,2017,2018][Math.floor(Math.random()*100)%5];
+    var userid = '';
     var sessid = $.cookie('sessid');
     var checkResponse = function(data) {
         if('object' !== typeof data) {
@@ -32,6 +100,9 @@ $(document).ready(function() {
                 switch(data.action) {
                     case 'login':
                         //if(typeof console !== 'undefined') console.log(data);
+                        if(data.success) {
+                            userid = data.content.id;
+                        }
                         break;
                     case 'send':
                         chat.receiveMessage(data.content.content);
@@ -62,7 +133,12 @@ $(document).ready(function() {
             });
         };
         chat.sendMessage = function(saying) {
-            chat.emit('request', {'sessid':sessid, action:'send', 'content':{headers:{from:'', to:''}, content:saying}});
+            var tos = [];
+            Object.keys($.to).map(function(to) {
+                tos.push(parseInt(to));
+            });
+            //$('#userlist').
+            chat.emit('request', {'sessid':sessid, action:'send', 'content':{headers:{from:userid, to:tos}, content:saying}});
             $.pnotify({
                 title: "Send",
                 text: saying,

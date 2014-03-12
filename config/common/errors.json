@@ -1,8 +1,11 @@
 {
     errors: {
         code: {
-            invalid: {
+            permission: {
                 user: 100001
+            },
+            invalid: {
+                user: 101001
             },
             oauth2: {
                 invalid: {
@@ -14,6 +17,9 @@
             register: 300001
         },
         info: {
+            permission: {
+                user: 'no_user_permission'
+            },
             invalid: {
                 user: 'invalid_user'
             },
