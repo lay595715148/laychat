@@ -20,18 +20,36 @@
             
             '/api': 'api.Api',
             
-            '/admin/token': 'admin.TokenAction',
-            '/admin/code': 'admin.CodeAction'
+            '/cms/token': 'cms.TokenAction',
+            '/cms/code': 'cms.CodeAction',
+            '/cms/channel': 'cms.CodeAction',
+            '/cms/client': 'cms.ClientAction',
+            '/cms/user': 'cms.UserAction'
         },
         regexp: [{
-            'reg':/^\/\u\/(\d+)$/,
+            'reg':/^\/u\/(\d+)$/,
             'ref':'web.UserAction'
-        },{
+        }, {
             'reg':/^\/c\/(\d+)$/,
             'ref':'web.ChannelAction'
-        },{
+        }, {
             'reg':/^\/app\/(\d+)$/,
             'ref':'web.ClientAction'
+        }, {//cms
+            'reg':/^\/cms\/client\/(\d+)\/(\w+)$/,
+            'ref':'cms.ClientProControl'
+        }, {
+            'reg':/^\/cms\/user\/(\d+)\/(\d+)$/,//page
+            'ref':'cms.UserControl'
+        }, {
+            'reg':/^\/cms\/user\/(\d+)\/([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
+            'ref':'cms.UserProControl'
+        }, {
+            'reg':/^\/cms\/user\/()([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
+            'ref':'cms.UserProControl'
+        }, {
+            'reg':/^\/cms\/channel\/(\d+)\/(\w+)$/,
+            'ref':'cms.ChannelProControl'
         }]
     }
 }

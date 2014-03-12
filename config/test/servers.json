@@ -23,6 +23,13 @@
                 'host':'localhost',
                 'port':11211
             },
+            slaves:[{
+                'host':'localhost',
+                'port':11211
+            }, {
+                'host':'localhost',
+                'port':11211
+            }],
             'slave':{
                 'host':'localhost',
                 'port':11211
