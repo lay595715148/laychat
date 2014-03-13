@@ -175,6 +175,7 @@ $(document).ready(function() {
                     $( "#userlist li[userid=" + user.id + "]" ).remove();
                     //$( "#userlist" ).menu('refresh');
                     $( "#userlist" ).selectable('refresh');
+                    delete $.to[user.id];
                 }
             } else {
                 if(user.status == 'join') {

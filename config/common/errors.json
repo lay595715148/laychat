@@ -5,7 +5,8 @@
                 user: 100001
             },
             invalid: {
-                user: 101001
+                user: 101001,
+                layer: 101002
             },
             oauth2: {
                 invalid: {
@@ -21,7 +22,8 @@
                 user: 'no_user_permission'
             },
             invalid: {
-                user: 'invalid_user'
+                user: 'invalid_user',
+                layer: 'invalid_layer'
             },
             oauth2: {
                 invalid: {
