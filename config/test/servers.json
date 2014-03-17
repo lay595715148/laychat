@@ -41,19 +41,16 @@
         },
         'redis':{
             'master':{
-                'host':'localhost',
-                'username':'lay',
-                'password':'lay'
+                'host':'192.168.159.132',
+                'port':6379
             },
             'slave':{
-                'host':'localhost',
-                'username':'lay',
-                'password':'lay'
+                'host':'192.168.159.132',
+                'port':6379
             },
             'slave-01':{
-                'host':'localhost',
-                'username':'lay',
-                'password':'lay'
+                'host':'192.168.159.132',
+                'port':6379
             }
         }
     }

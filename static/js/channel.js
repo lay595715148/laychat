@@ -26,6 +26,8 @@
 
 $(document).ready(function() {
     $.to = {};
+    $.user = {};
+    $.users = {};
     $('#sendbtn').button();
     $('#sendbtn').laychat();
     $('#chatlist').menu();
@@ -70,7 +72,6 @@ $(document).ready(function() {
  * socket cnnect file
  */
 $(document).ready(function() {
-    var userid = '';
     var sessid = $.cookie('sessid');
     var checkResponse = function(data) {
         if('object' !== typeof data) {
@@ -101,11 +102,11 @@ $(document).ready(function() {
                     case 'login':
                         //if(typeof console !== 'undefined') console.log(data);
                         if(data.success) {
-                            userid = data.content.id;
+                            $.user = data.content;
                         }
                         break;
                     case 'send':
-                        chat.receiveMessage(data.content.content);
+                        chat.receiveMessage(data.content);
                         break;
                     case 'list':
                         chat.listUser(data.content);
@@ -138,21 +139,23 @@ $(document).ready(function() {
                 tos.push(parseInt(to));
             });
             //$('#userlist').
-            chat.emit('request', {'sessid':sessid, action:'send', 'content':{headers:{from:userid, to:tos}, content:saying}});
+            chat.emit('request', {'sessid':sessid, action:'send', 'content':{headers:{from:$.user.id, to:tos}, content:saying}});
             $.pnotify({
                 title: "Send",
                 text: saying,
                 styling: 'jqueryui'
             });
-            $('#content').append('<p style="color:green">S: <br>' + saying + '</p>');
+            $('#content').append('<p style="color:green">' + $.user.nick + ': <br>' + saying + '</p>');
         };
-        chat.receiveMessage = function(saying) {
+        chat.receiveMessage = function(data) {
+            var from = data.headers.from;
+            var saying = data.content;
             $.pnotify({
                 title: "Receive",
                 text: saying,
                 styling: 'jqueryui'
             });
-            $('#content').append('<p style="color:blue">R: <br>' + saying + '</p>');
+            $('#content').append('<p style="color:blue">' + $.users[from].nick + ': <br>' + saying + '</p>');
         };
         chat.listUser = function(list) {
             var users = list.list;
@@ -163,6 +166,7 @@ $(document).ready(function() {
                 usershtml += '<li userid="' + user.id + '">' + 
                 '<a userid="' + user.id + '" socket="' + user.socket + '">' + user.name + '(' + user.nick + ')</a>' + 
                 '</li>';
+                $.users[user.id] = $.users[user.socket] = user;
             }
             $( "#userlist" ).html(usershtml);
             //$( "#userlist" ).menu();
@@ -175,6 +179,7 @@ $(document).ready(function() {
                     $( "#userlist li[userid=" + user.id + "]" ).remove();
                     //$( "#userlist" ).menu('refresh');
                     $( "#userlist" ).selectable('refresh');
+                    delete $.users[user.id],delete $.users[user.socket];
                     delete $.to[user.id];
                 }
             } else {
@@ -185,6 +190,7 @@ $(document).ready(function() {
                     $( "#userlist" ).append(userhtml);
                     //$( "#userlist" ).menu('refresh');
                     $( "#userlist" ).selectable('refresh');
+                    $.users[user.id] = $.users[user.socket] = user;
                 }
             }
         };
