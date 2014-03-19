@@ -50,6 +50,15 @@
         }, {
             'reg':/^\/cms\/channel\/(\d+)\/(\w+)$/,
             'ref':'cms.ChannelProControl'
+        }, {
+            'reg':/^\/cms\/friend\/(\d+)\/(\d+)$/,//page
+            'ref':'cms.FriendControl'
+        }, {
+            'reg':/^\/cms\/friend\/(\d+)\/([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
+            'ref':'cms.FriendProControl'
+        }, {
+            'reg':/^\/cms\/friend\/()([A-Za-z_][0-9A-Za-z_]{0,})$/,
+            'ref':'cms.FriendProControl'
         }]
     }
 }
