@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title Lay User
+    link(rel='shortcut icon', href='/image/favicon.ico')
+    link(type='text/css', href='/jquery/jquery-ui-1.10.3.custom/css/flick/jquery-ui.css', media='all', rel='stylesheet')
+    link(type='text/css', href='/webix/webix.css', rel='stylesheet')
+    link(type='text/css', href='css/base.css', rel='stylesheet')
+    link(type='text/css', href='/jquery/pnotify-1.2.0/devnote.css', rel='stylesheet')
+    link(type='text/css', href='/jquery/pnotify-1.2.0/oxygen/icons.css', rel='stylesheet')
+    link(type='text/css', href='/jquery/pnotify-1.2.0/jquery.pnotify.default.css', rel='stylesheet')
+    link(type='text/css', href='/jquery/pnotify-1.2.0/jquery.pnotify.default.icons.css', rel='stylesheet')
+    link(type='text/css', href='/css/main.css',  rel='stylesheet')
+    //
+      [if lt IE 9]>
+      script(type='text/javascript', src='/library/html5shiv.js')
+      <![endif]
+    script(type='text/javascript', src='/library/underscore/underscore.js')
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+    script(type='text/javascript', src='/jquery/jquery-1.10.2.js')
+    script(type='text/javascript', src='/jquery/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js')
+    script(type='text/javascript', src='/jquery/jquery.cookie.js')
+    script(type='text/javascript', src='/jquery/pnotify-1.2.0/jquery.pnotify.js')
+    script(type='text/javascript', src='/js/core.js')
+  body
+    .container.mar_auto.wid_p10.bod_dot_r.bod_dot_l
+      .left_column.l.pad_lef1.pad_rit1.wid_pix70.bod_dot_r
+        .title.hei_pix6.bod_dot_b
+          h1 我
+        #content.content.over_flow_auto.hei_pix50.bod_dot.mar_t4
+        .chat_column.mar_t4.mar_b4
+          .l.mar_r3
+            input#sendmsg.wid_pix60.hei_p4.pad_a2.mar_t.mar_b.font_l4.font_siz1_2
+          .r.mar_l3
+            button#sendbtn 发送
+          .clr
+      .right_column.l.pad_lef1.pad_rit1.wid_pix28
+        .title.hei_pix6.bod_dot_b
+          h1 他们
+        .content.chatlist.mar_t4
+          ul#chatlist.mar_b4
+            li
+              a(href='javascript:void(0);') 1000000000(系统)
+        .content.userlist.mar_t4
+          ul#userlist
+      .clr
+    script(type='text/javascript', src='/js/user.js')
