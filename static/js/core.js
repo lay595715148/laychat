@@ -57,8 +57,48 @@ Utilities.extend = extend = function(target) {
     });
     return target;
 };
+Utilities.merge = merge = function(target) {
+    return Utilities.extend.apply(null, arguments);
+};
 Utilities.clone = clone = function(target) {
     return Utilities.extend({}, target);
+};
+Utilities.bind = bind = function(fn, me) {
+    return function() {
+        return fn.apply(me, arguments);
+    };
+};
+
+/**
+ * 计算绝对地址
+ * 
+ * @public
+ * @param <string> url
+ *            原url
+ * @return <string> 绝对URL
+ * @static
+ */
+Utilities.compute = compute = function(url, base) {
+    var rootMatcher = /(^\w+:((\/\/\/\w\:)|(\/\/[^\/]*))?)/;
+    var homeFormater = /(^\w+:\/\/[^\/#\?]*$)/;
+    var urlTrimer = /[#\?].*$/;
+    var dirTrimer = /[^\/\\]*([#\?].*)?$/;
+    var forwardTrimer = /[^\/]+\/\.\.\//;
+    var purl = url.replace(urlTrimer, '').replace(/\\/g, '/');
+    var surl = url.substr(purl.length);
+
+    base = document && window ? document.location.href.replace(homeFormater, "$1/").replace(dirTrimer, "") : (base || '');
+    // prompt(rootMatcher.test(purl),[purl , surl])
+    if(rootMatcher.test(purl)) {
+        return purl + surl;
+    } else if(purl.charAt(0) == '/') {
+        return rootMatcher.exec(base)[0] + purl + surl;
+    }
+    purl = base + purl;
+    while(purl.length > (purl = purl.replace(forwardTrimer, '')).length) {
+        // alert(purl)
+    }
+    return purl + surl;
 };
 /**
  * convert to json format

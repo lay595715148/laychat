@@ -37,16 +37,32 @@ $(document).ready(function() {
     var rawlabelu = uinput.parent().children('label').html();
     var rawlabelp = pinput.parent().children('label').html();
     uinput.on('focus', function(el) {
-        uinput.parent().children('label').html('');
+        if(uinput.val()) {
+            uinput.parent().children('label').html('');
+        }
     }).on('blur', function() {
         if(!uinput.val()) {
             uinput.parent().children('label').html(rawlabelu);
         }
+    }).on('input', function() {
+        if(uinput.val()) {
+            uinput.parent().children('label').html('');
+        } else {
+            uinput.parent().children('label').html(rawlabelu);
+        }
     });
     pinput.on('focus', function(el) {
-        pinput.parent().children('label').html('');
+        if(pinput.val()) {
+            pinput.parent().children('label').html('');
+        }
     }).on('blur', function() {
         if(!pinput.val()) {
+            pinput.parent().children('label').html(rawlabelp);
+        }
+    }).on('input', function() {
+        if(pinput.val()) {
+            pinput.parent().children('label').html('');
+        } else {
             pinput.parent().children('label').html(rawlabelp);
         }
     });
