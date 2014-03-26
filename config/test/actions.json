@@ -1,64 +1,64 @@
 {
     actions: {
         get:{
-            '/': 'web.Index',
-            '/index': 'web.Index',
-            '/manager': 'Manage',
-            '/client': 'web.ClientAction',
-            '/channel': 'web.ChannelAction',
-            '/user': 'web.UserAction'
+            "/": "web.Index",
+            "/index": "web.Index",
+            "/manager": "Manage",
+            "/client": "web.ClientAction",
+            "/channel": "web.ChannelAction",
+            "/user": "web.UserAction"
         },
         post:{
-            '/api': 'api.Api'
+            "/api": "api.Api"
         },
         request:{
-            '/oauth2/authorize': 'auth.Authorize',
-            '/oauth2/token': 'auth.Token',
-            '/login': 'auth.Login',
-            '/logout': 'auth.Logout',
-            '/redirect': 'auth.Redirect',
+            "/oauth2/authorize": "auth.Authorize",
+            "/oauth2/token": "auth.Token",
+            "/login": "auth.Login",
+            "/logout": "auth.Logout",
+            "/redirect": "auth.Redirect",
             
-            '/api': 'api.Api',
+            "/api": "api.Api",
             
-            '/cms/token': 'cms.TokenAction',
-            '/cms/code': 'cms.CodeAction',
-            '/cms/channel': 'cms.CodeAction',
-            '/cms/client': 'cms.ClientAction',
-            '/cms/user': 'cms.UserAction'
+            "/cms/token": "cms.TokenAction",
+            "/cms/code": "cms.CodeAction",
+            "/cms/channel": "cms.CodeAction",
+            "/cms/client": "cms.ClientAction",
+            "/cms/user": "cms.UserAction"
         },
         regexp: [{
-            'reg':/^\/u\/(\d+)$/,
-            'ref':'web.UserAction'
+            "reg":/^\/u\/(\d+)$/,
+            "ref":"web.UserAction"
         }, {
-            'reg':/^\/c\/(\d+)$/,
-            'ref':'web.ChannelAction'
+            "reg":/^\/c\/(\d+)$/,
+            "ref":"web.ChannelAction"
         }, {
-            'reg':/^\/app\/(\d+)$/,
-            'ref':'web.ClientAction'
+            "reg":/^\/app\/(\d+)$/,
+            "ref":"web.ClientAction"
         }, {//cms
-            'reg':/^\/cms\/client\/(\d+)\/(\w+)$/,
-            'ref':'cms.ClientProControl'
+            "reg":/^\/cms\/client\/(\d+)\/(\w+)$/,
+            "ref":"cms.ClientProControl"
         }, {
-            'reg':/^\/cms\/user\/(\d+)\/(\d+)$/,//page
-            'ref':'cms.UserControl'
+            "reg":/^\/cms\/user\/(\d+)\/(\d+)$/,//page
+            "ref":"cms.UserControl"
         }, {
-            'reg':/^\/cms\/user\/(\d+)\/([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
-            'ref':'cms.UserProControl'
+            "reg":/^\/cms\/user\/(\d+)\/([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
+            "ref":"cms.UserProControl"
         }, {
-            'reg':/^\/cms\/user\/()([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
-            'ref':'cms.UserProControl'
+            "reg":/^\/cms\/user\/()([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
+            "ref":"cms.UserProControl"
         }, {
-            'reg':/^\/cms\/channel\/(\d+)\/(\w+)$/,
-            'ref':'cms.ChannelProControl'
+            "reg":/^\/cms\/channel\/(\d+)\/(\w+)$/,
+            "ref":"cms.ChannelProControl"
         }, {
-            'reg':/^\/cms\/friend\/(\d+)\/(\d+)$/,//page
-            'ref':'cms.FriendControl'
+            "reg":/^\/cms\/friend\/(\d+)\/(\d+)$/,//page
+            "ref":"cms.FriendControl"
         }, {
-            'reg':/^\/cms\/friend\/(\d+)\/([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
-            'ref':'cms.FriendProControl'
+            "reg":/^\/cms\/friend\/(\d+)\/([A-Za-z_][0-9A-Za-z_]{0,})$/,//operate
+            "ref":"cms.FriendProControl"
         }, {
-            'reg':/^\/cms\/friend\/()([A-Za-z_][0-9A-Za-z_]{0,})$/,
-            'ref':'cms.FriendProControl'
+            "reg":/^\/cms\/friend\/()([A-Za-z_][0-9A-Za-z_]{0,})$/,
+            "ref":"cms.FriendProControl"
         }]
     }
 }

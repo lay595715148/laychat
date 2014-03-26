@@ -1,56 +1,56 @@
 {
-    'servers':{
-        'mongodb':{
-            'master':{
-                'host':'localhost',
-                'database':'laysoft',
-                'port':27017,
-                'username':'lay',
-                'password':'123456',
-                'encoding':'UTF8'
+    "servers":{
+        "mongodb":{
+            "master":{
+                "host":"localhost",
+                "database":"laysoft",
+                "port":27017,
+                "username":"lay",
+                "password":"123456",
+                "encoding":"UTF8"
             },
-            'slave':{
-                'host':'localhost',
-                'database':'laysoft',
-                'port':27017,
-                'username':'lay',
-                'password':'123456',
-                'encoding':'UTF8'
+            "slave":{
+                "host":"localhost",
+                "database":"laysoft",
+                "port":27017,
+                "username":"lay",
+                "password":"123456",
+                "encoding":"UTF8"
             }
         },
-        'memcache':{
-            'master':{
-                'host':'localhost',
-                'port':11211
+        "memcache":{
+            "master":{
+                "host":"localhost",
+                "port":11211
             },
             slaves:[{
-                'host':'localhost',
-                'port':11211
+                "host":"localhost",
+                "port":11211
             }, {
-                'host':'localhost',
-                'port':11211
+                "host":"localhost",
+                "port":11211
             }],
-            'slave':{
-                'host':'localhost',
-                'port':11211
+            "slave":{
+                "host":"localhost",
+                "port":11211
             },
-            'slave-01':{
-                'host':'localhost',
-                'port':11211
+            "slave-01":{
+                "host":"localhost",
+                "port":11211
             }
         },
-        'redis':{
-            'master':{
-                'host':'192.168.159.132',
-                'port':6379
+        "redis":{
+            "master":{
+                "host":"192.168.159.132",
+                "port":6379
             },
-            'slave':{
-                'host':'192.168.159.132',
-                'port':6379
+            "slave":{
+                "host":"192.168.159.132",
+                "port":6379
             },
-            'slave-01':{
-                'host':'192.168.159.132',
-                'port':6379
+            "slave-01":{
+                "host":"192.168.159.132",
+                "port":6379
             }
         }
     }

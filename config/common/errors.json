@@ -19,20 +19,20 @@
         },
         info: {
             permission: {
-                user: 'no_user_permission'
+                user: "no_user_permission"
             },
             invalid: {
-                user: 'invalid_user',
-                layer: 'invalid_layer'
+                user: "invalid_user",
+                layer: "invalid_layer"
             },
             oauth2: {
                 invalid: {
-                    grant: 'oauth2_invalid_grant',
-                    token: 'oauth2_invalid_token',
-                    authorize:'oauth2_authorize_error'
+                    grant: "oauth2_invalid_grant",
+                    token: "oauth2_invalid_token",
+                    authorize:"oauth2_authorize_error"
                 }
             },
-            register:'register_error'
+            register:"register_error"
         }
     }
 }

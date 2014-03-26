@@ -1,20 +1,20 @@
 {
     sign: {
         memcache: {
-            session: 'session',
-            token: 'token',
-            user: 'user',
+            session: "session",
+            token: "token",
+            user: "user",
             oauth2: {
                 
             }
         },
         cookie: {
-            session: 'sessid'
+            session: "sessid"
         },
         query: {
             oauth2: {
-                code: 'code',
-                token: 'token'
+                code: "code",
+                token: "token"
             }
         },
         action: {

@@ -1,8 +1,8 @@
 {
     urls: {
         oauth2: {
-            authorize:'/oauth2/authorize'
+            authorize:"/oauth2/authorize"
         },
-        register:'/register'
+        register:"/register"
     }
 }
