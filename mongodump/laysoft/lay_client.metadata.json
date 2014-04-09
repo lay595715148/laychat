@@ -1,0 +1,1 @@
+{ "options" : { "create" : "lay_client" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_client", "name" : "_id_" }, { "v" : 1, "key" : { "clientId" : 1 }, "unique" : true, "ns" : "laysoft.lay_client", "name" : "clientId_1" } ] }

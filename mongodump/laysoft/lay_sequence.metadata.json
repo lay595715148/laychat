@@ -1,0 +1,1 @@
+{ "options" : { "create" : "lay_sequence" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_sequence", "name" : "_id_" }, { "v" : 1, "key" : { "name" : 1 }, "unique" : true, "ns" : "laysoft.lay_sequence", "name" : "name_1" } ] }

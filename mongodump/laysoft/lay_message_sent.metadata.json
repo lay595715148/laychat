@@ -1,0 +1,1 @@
+{ "options" : { "create" : "lay_message_sent" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_message_sent", "name" : "_id_" } ] }

@@ -1,0 +1,1 @@
+{ "options" : { "create" : "laysoft.lay_oauth2_token" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_oauth2_token", "name" : "_id_" } ] }

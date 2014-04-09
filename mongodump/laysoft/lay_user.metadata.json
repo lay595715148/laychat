@@ -1,0 +1,1 @@
+{ "options" : { "create" : "laysoft.lay_user" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_user", "name" : "_id_" }, { "v" : 1, "key" : { "name" : 1 }, "unique" : true, "ns" : "laysoft.lay_user", "name" : "name_1" } ] }

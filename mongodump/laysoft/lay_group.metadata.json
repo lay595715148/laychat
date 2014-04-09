@@ -1,0 +1,1 @@
+{ "options" : { "create" : "lay_group" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_group", "name" : "_id_" } ] }

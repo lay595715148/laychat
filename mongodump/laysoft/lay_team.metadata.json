@@ -1,0 +1,1 @@
+{ "options" : { "create" : "lay_team" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_team", "name" : "_id_" } ] }

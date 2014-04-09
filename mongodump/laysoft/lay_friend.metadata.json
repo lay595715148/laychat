@@ -1,0 +1,1 @@
+{ "options" : { "create" : "lay_friend" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "laysoft.lay_friend", "name" : "_id_" }, { "v" : 1, "key" : { "userid" : 1, "friendid" : 1 }, "unique" : true, "ns" : "laysoft.lay_friend", "name" : "userid_1_friendid_1" } ] }
