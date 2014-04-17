@@ -2,13 +2,14 @@ laychat
 =======
 
 web/client chat by nodejs
+OAuth2 SSO includes
 
-plugins
+Plugins
 =======
 
 - https://github.com/lay595715148/layutil
 
-dependences
+Dependences
 =======
 
 - express
@@ -26,3 +27,19 @@ dependences
 - useragent
 - mime
 - underscore
+
+Install
+=======
+
+### import mongodb data
+
+```
+mongo
+mongoimport -d laysoft --directoryperdb ./data/mongodump/laysoft
+```
+
+### start server
+
+```
+node ./server.js
+```
