@@ -1,7 +1,7 @@
 laychat
 =======
 
-web/client chat by nodejs,OAuth2 SSO included
+B/S chat by nodejs,OAuth2 SSO included
 
 Plugins
 =======
